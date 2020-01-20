@@ -8,12 +8,11 @@ namespace Fungible.Movement
     
         [SerializeField] private Room firstRoom;
         [SerializeField] private Room currentRoom;
-        private SpriteRenderer spriteRenderer;
 
         private void Awake()
         {
             instance = this;
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            GetComponent<SpriteRenderer>().sortingOrder = GlobalConfig.SortOrderBackground;
         }
 
         private void Start()
@@ -40,12 +39,11 @@ namespace Fungible.Movement
 
             currentRoom.OnEnter();
             currentRoom.gameObject.SetActive(true);
-
-            spriteRenderer.sprite = currentRoom.backgroundSprite;
         }
 
         private void AdjustBackground()
         {
+            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
             if (spriteRenderer == null)
                 return;
 

@@ -8,7 +8,7 @@ namespace Fungible.Movement
         public bool movementAllowed;
         [SerializeField] private Room roomMoveTo;
     
-        void OnMouseDown()
+        private void OnMouseDown()
         {
             if (movementAllowed)
                 Map.instance.EnterRoom(roomMoveTo);

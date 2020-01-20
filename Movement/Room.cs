@@ -1,15 +1,18 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 namespace Fungible.Movement
 {
     public class Room : MonoBehaviour
     {
         public string backgroundResourceName;
-        public Sprite backgroundSprite;
+
+        private Sprite backgroundSprite;
 
         public void OnEnter()
         {
             backgroundSprite = Resources.Load<Sprite>("Backgrounds/" + backgroundResourceName);
+            Map.instance.GetComponent<SpriteRenderer>().sprite = backgroundSprite;
         }
 
         public void OnLeave()
