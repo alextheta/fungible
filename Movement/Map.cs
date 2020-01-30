@@ -1,17 +1,18 @@
-﻿using UnityEngine;
+﻿using Fungible.UI;
+using UnityEngine;
 
 namespace Fungible.Movement
 {
     public class Map : MonoBehaviour
     {
-        public static Map instance;
-    
+        public static Map Instance;
+
         [SerializeField] private Room firstRoom;
         [SerializeField] private Room currentRoom;
 
         private void Awake()
         {
-            instance = this;
+            Instance = this;
             GetComponent<SpriteRenderer>().sortingOrder = GlobalConfig.SortOrderBackground;
         }
 
@@ -23,7 +24,7 @@ namespace Fungible.Movement
 
         public void EnterRoom(Room room)
         {
-            MovementHistoryController.instance.AddPreviousRoom(currentRoom);
+            MovementHistoryController.Instance.AddPreviousRoom(currentRoom);
             ChangeRoom(room);
         }
 
@@ -47,18 +48,27 @@ namespace Fungible.Movement
             if (spriteRenderer == null)
                 return;
 
+            CoverPanel coverPanel = FindObjectOfType<CoverPanel>();
+            if (coverPanel == null)
+                return;
+
+            Sprite sprite = spriteRenderer.sprite;
+
             transform.position = Vector3.zero;
             transform.localScale = Vector3.one;
 
-            Sprite sprite = spriteRenderer.sprite;
-            float width = sprite.bounds.size.x;
-            float height = sprite.bounds.size.y;
-
             float worldScreenHeight = Camera.main.orthographicSize * 2.0f;
             float worldScreenWidth = worldScreenHeight / Screen.height * Screen.width;
-        
-            transform.localScale =
-                new Vector3(worldScreenWidth / width, worldScreenHeight / height, transform.localScale.z);
+
+            Vector2 spriteSize = new Vector2(sprite.bounds.size.x, sprite.bounds.size.y);
+            Vector2 coverPanelSize = coverPanel.GetWorldSize();
+            Vector3 scaleDiff = new Vector3((worldScreenWidth - coverPanelSize.x) / 2.0f,
+                (worldScreenHeight - coverPanelSize.y) / 2.0f, 0);
+
+            transform.localScale = new Vector3(coverPanelSize.x / spriteSize.x, coverPanelSize.y / spriteSize.y,
+                transform.localScale.z);
+
+            transform.position -= scaleDiff;
         }
     }
 }

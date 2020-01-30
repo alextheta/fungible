@@ -12,7 +12,7 @@ namespace Fungible.Movement
         public void OnEnter()
         {
             backgroundSprite = Resources.Load<Sprite>("Backgrounds/" + backgroundResourceName);
-            Map.instance.GetComponent<SpriteRenderer>().sprite = backgroundSprite;
+            Map.Instance.GetComponent<SpriteRenderer>().sprite = backgroundSprite;
         }
 
         public void OnLeave()

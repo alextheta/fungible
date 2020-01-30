@@ -5,13 +5,13 @@ namespace Fungible.Movement
 {
     public class MovementHistoryController : MonoBehaviour
     {
-        public static MovementHistoryController instance;
+        public static MovementHistoryController Instance;
 
         public Stack<Room> history;
 
         private void Awake()
         {
-            instance = this;
+            Instance = this;
             history = new Stack<Room>();
         }
 
@@ -24,7 +24,7 @@ namespace Fungible.Movement
         public void PopRoom()
         {
             if (history.Count != 0)
-                Map.instance.ChangeRoom(history.Pop());
+                Map.Instance.ChangeRoom(history.Pop());
         }
     }
 }

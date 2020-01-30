@@ -3,7 +3,7 @@
 namespace Fungible.Movement
 {
     [RequireComponent(typeof(BoxCollider2D))]
-    public class MovementPortal : MonoBehaviour
+    public class Portal : MonoBehaviour
     {
         public bool movementAllowed;
         [SerializeField] private Room roomMoveTo;
@@ -11,7 +11,7 @@ namespace Fungible.Movement
         private void OnMouseDown()
         {
             if (movementAllowed)
-                Map.instance.EnterRoom(roomMoveTo);
+                Map.Instance.EnterRoom(roomMoveTo);
         }
     }
 }
