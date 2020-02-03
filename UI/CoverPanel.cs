@@ -1,15 +1,9 @@
 ﻿using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Fungible.UI
 {
-    public class CoverPanel : MonoBehaviour, IPointerClickHandler
+    public class CoverPanel : MonoBehaviour
     {
-        public void OnPointerClick(PointerEventData eventData)
-        {
-            Debug.Log("Not implemented");
-        }
-
         public Vector2 GetWorldSize()
         {
             RectTransform rt = GetComponent<RectTransform>();
