@@ -12,7 +12,8 @@ namespace Fungible.Inventory
 
         public override void OnClick()
         {
-            Debug.Log("Item [" + this + "]");
+            if (InventoryController.Instance.AddItem(this))
+                gameObject.SetActive(false);
         }
     }
 }

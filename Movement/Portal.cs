@@ -6,7 +6,7 @@ namespace Fungible.Movement
     public class Portal : ClickableObject
     {
         public bool movementAllowed;
-        [SerializeField] private Room roomMoveTo;
+        public Room roomMoveTo;
 
         public override void OnClick()
         {

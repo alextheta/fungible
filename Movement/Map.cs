@@ -7,7 +7,7 @@ namespace Fungible.Movement
     {
         public static Map Instance;
 
-        [SerializeField] private Room firstRoom;
+        public Room firstRoom;
         [SerializeField] private Room currentRoom;
 
         private void Awake()
