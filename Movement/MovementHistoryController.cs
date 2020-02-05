@@ -5,9 +5,11 @@ namespace Fungible.Movement
 {
     public class MovementHistoryController : MonoBehaviour
     {
+        public GameObject backButton;
+        
         public static MovementHistoryController Instance;
 
-        public Stack<Room> history;
+        private Stack<Room> history;
 
         private void Awake()
         {
@@ -25,6 +27,11 @@ namespace Fungible.Movement
         {
             if (history.Count != 0)
                 Map.Instance.ChangeRoom(history.Pop());
+        }
+
+        public void UpdateBackButton()
+        {
+            backButton.SetActive(history.Count != 0);
         }
     }
 }

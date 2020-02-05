@@ -2,7 +2,7 @@
 
 namespace Fungible.UI
 {
-    public class CoverPanel : MonoBehaviour
+    public class MainPanel : MonoBehaviour
     {
         public Vector2 GetWorldSize()
         {

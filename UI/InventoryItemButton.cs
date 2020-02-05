@@ -6,7 +6,8 @@ namespace Fungible.UI
     {
         public void OnClick()
         {
-            Debug.Log("Slot index [" + transform.parent.GetSiblingIndex() + "]");
+            if (ProxyControlsPanel.Instance.ControlsAllowed())
+                Debug.Log("Slot index [" + transform.parent.GetSiblingIndex() + "]");
         }
     }
 }

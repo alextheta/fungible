@@ -4,10 +4,28 @@ using UnityEngine.EventSystems;
 
 namespace Fungible.UI
 {
-    public class ProxyControllsPanel : MonoBehaviour, IPointerDownHandler
+    public class ProxyControlsPanel : MonoBehaviour, IPointerDownHandler
     {
+        public static ProxyControlsPanel Instance;
+        
         private LayerMask _uiLayerMask;
+        private bool controlsAllowed = true;
 
+        public void EnableControls()
+        {
+            controlsAllowed = true;
+        }
+        
+        public void DisableControls()
+        {
+            controlsAllowed = false;
+        }
+
+        public bool ControlsAllowed()
+        {
+            return controlsAllowed;
+        }
+        
         public void OnPointerDown(PointerEventData pointerEventData)
         {
             List<RaycastResult> raycastResults = new List<RaycastResult>();
@@ -34,6 +52,7 @@ namespace Fungible.UI
         
         private void Awake()
         {
+            Instance = this;
             _uiLayerMask = LayerMask.NameToLayer("UI");
         }
         

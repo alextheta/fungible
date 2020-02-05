@@ -7,7 +7,8 @@ namespace Fungible.UI
     {
         public void OnClick()
         {
-            MovementHistoryController.Instance.PopRoom();
+            if (ProxyControlsPanel.Instance.ControlsAllowed())
+                MovementHistoryController.Instance.PopRoom();
         }
     }
 }
