@@ -2,7 +2,6 @@
 
 namespace Fungible.Inventory
 {
-    [RequireComponent(typeof(BoxCollider2D))]
     public class Item : ClickableObject
     {
         private void Awake()

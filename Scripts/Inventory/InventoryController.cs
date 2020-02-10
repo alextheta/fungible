@@ -1,5 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using Fungible.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,47 +13,66 @@ namespace Fungible.Inventory
         public bool itemFixedAspect;
         public int allowedItemCount;
 
+        public Color selectedItemColor;
+        public Color unselectedItemColor;
+
         public static InventoryController Instance;
 
-        [Header("Ingame Inventory")]
-        [SerializeField] private List<Item> itemsInInventory;
+        private int currentItemCount;
+        private InventoryItemHandler selectedItemHandler;
 
         public bool AddItem(Item item)
         {
-            if (itemsInInventory.Count >= allowedItemCount)
+            if (currentItemCount >= allowedItemCount - 1)
                 return false;
 
-            itemsInInventory.Add(item);
-            UpdateInventoryPanel();
+            GameObject itemSlotObject = GetSlotObject(currentItemCount);
+            GameObject itemImageObject = GetItemImageObjectInSlot(itemSlotObject);
+            InventoryItemHandler itemHandler = itemSlotObject.GetComponent<InventoryItemHandler>();
+            Image itemImage = itemImageObject.GetComponent<Image>();
+
+            itemHandler.item = item;
+            itemImage.sprite = item.GetComponent<SpriteRenderer>().sprite;
+            itemImage.color = unselectedItemColor;
+            itemSlotObject.SetActive(true);
+            itemImageObject.SetActive(true);
+
+            currentItemCount++;
             return true;
         }
 
-        private void UpdateInventoryPanel()
+        public void SelectItem(InventoryItemHandler itemHandler)
         {
-            for (int i = 0; i < allowedItemCount; i++)
+            if (selectedItemHandler != null)
             {
-                Image itemImageInSlot = GetItemImageInSlot(GetSlot(i)).GetComponent<Image>();
-                if (i < itemsInInventory.Count)
-                {
-                    itemImageInSlot.sprite = itemsInInventory[i].gameObject.GetComponent<SpriteRenderer>().sprite;
-                    itemImageInSlot.gameObject.SetActive(true);
-                }
-                else
-                {
-                    itemImageInSlot.gameObject.SetActive(false);
-                }
+                Image itemImage = GetItemImageObjectInSlot(selectedItemHandler.gameObject).GetComponent<Image>();
+                itemImage.color = unselectedItemColor;
             }
+
+            selectedItemHandler = itemHandler != selectedItemHandler ? itemHandler : null;
+
+            if (selectedItemHandler != null)
+            {
+                Image itemImage = GetItemImageObjectInSlot(selectedItemHandler.gameObject).GetComponent<Image>();
+                itemImage.color = selectedItemHandler ? selectedItemColor : unselectedItemColor;
+            }
+
+            if (selectedItemHandler != null) Debug.Log("Select [" + selectedItemHandler.item + "]");
         }
 
-        private GameObject GetSlot(int index)
+        public Item GetSelected()
         {
-            if (index > inventoryPanel.transform.childCount)
-                return null;
-
-            return inventoryPanel.transform.GetChild(index).gameObject;
+            return selectedItemHandler != null ? selectedItemHandler.item : null;
         }
 
-        private GameObject GetItemImageInSlot(GameObject slot)
+        private GameObject GetSlotObject(int index)
+        {
+            return index > inventoryPanel.transform.childCount
+                ? null
+                : inventoryPanel.transform.GetChild(index).gameObject;
+        }
+
+        private GameObject GetItemImageObjectInSlot(GameObject slot)
         {
             return slot.transform.GetChild(0).gameObject;
         }
@@ -62,20 +81,16 @@ namespace Fungible.Inventory
         {
             Instance = this;
 
-            itemsInInventory = new List<Item>();
-
             for (int i = 0; i < allowedItemCount; i++)
             {
                 GameObject slot = Instantiate(slotPrefab, inventoryPanel.transform);
-                slot.name = slotPrefab.name;
+                slot.name = slotPrefab.name + i;
 
                 if (slotFixedAspect)
                     slot.GetComponent<AspectRatioFitter>().enabled = true;
 
-                GameObject itemInSlot = GetItemImageInSlot(slot);
-
                 if (itemFixedAspect)
-                    itemInSlot.GetComponent<AspectRatioFitter>().enabled = true;
+                    GetItemImageObjectInSlot(slot).GetComponent<AspectRatioFitter>().enabled = true;
             }
         }
     }
