@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Fungible.Environment;
+using UnityEngine;
 
 namespace Fungible.Movement
 {

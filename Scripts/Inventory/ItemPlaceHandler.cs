@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Fungible.Environment;
 using UnityEngine;
 
 namespace Fungible.Inventory
@@ -13,7 +14,7 @@ namespace Fungible.Inventory
             public Item item;
         }
 
-        [SerializeField] private List<ItemPlaced> requiredItems;
+        public List<ItemPlaced> requiredItems;
 
         public override void OnClick()
         {
@@ -41,12 +42,12 @@ namespace Fungible.Inventory
 
         private bool CheckRequiredItems()
         {
-            bool allItemsIsPlaced = true;
+            bool allItemsArePlaced = true;
 
             foreach (ItemPlaced requiredItem in requiredItems)
-                allItemsIsPlaced &= requiredItem.placed;
+                allItemsArePlaced &= requiredItem.placed;
 
-            return allItemsIsPlaced;
+            return allItemsArePlaced;
         }
     }
 }
