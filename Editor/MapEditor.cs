@@ -26,8 +26,12 @@ namespace Fungible.Editor
         {
             serializedObject.Update();
 
-            FirstRoomBlock();
-            DisplayedRoomBlock();
+            if (roomNames.Count > 0)
+            {
+                FirstRoomBlock();
+                DisplayedRoomBlock();
+            }
+
             NewRoomBlock();
 
             serializedObject.ApplyModifiedProperties();
@@ -40,7 +44,8 @@ namespace Fungible.Editor
             RebuildMapData();
 
             firstRoom = serializedObject.FindProperty("firstRoom");
-            firstRoomIndex = GetIndexByName(firstRoom.objectReferenceValue.name);
+            if (roomNames.Count > 0 && firstRoom.objectReferenceValue != null)
+                firstRoomIndex = GetIndexByName(firstRoom.objectReferenceValue.name);
         }
 
         private void FirstRoomBlock()
@@ -200,37 +205,6 @@ namespace Fungible.Editor
                 roomNames.Add(roomTransform.name);
                 roomNameMap.Add(roomTransform.name, roomTransform.GetComponent<Room>());
             }
-        }
-
-        [MenuItem("GameObject/Fungible Adventure/Item", false, 10)]
-        public static void CreateItem()
-        {
-            GameObject item = new GameObject("Item");
-            item.AddComponent<SpriteRenderer>();
-            item.AddComponent<Item>();
-            item.GetComponent<BoxCollider2D>().size = Vector2.one;
-            item.transform.parent = Selection.activeTransform;
-            item.transform.localPosition = Vector3.zero;
-        }
-        
-        [MenuItem("GameObject/Fungible Adventure/Item Place Handler", false, 10)]
-        public static void CreateItemPlaceHandler()
-        {
-            GameObject itemPlaceHandler = new GameObject("ItemPlaceHandler");
-            itemPlaceHandler.AddComponent<ItemPlaceHandler>();
-            itemPlaceHandler.GetComponent<BoxCollider2D>().size = Vector2.one;
-            itemPlaceHandler.transform.parent = Selection.activeTransform;
-            itemPlaceHandler.transform.localPosition = Vector3.zero;
-        }
-        
-        [MenuItem("GameObject/Fungible Adventure/Portal", false, 10)]
-        public static void CreatePortal()
-        {
-            GameObject portal = new GameObject("Portal");
-            portal.AddComponent<Portal>();
-            portal.GetComponent<BoxCollider2D>().size = Vector2.one;
-            portal.transform.parent = Selection.activeTransform;
-            portal.transform.localPosition = Vector3.zero;
         }
     }
 }
