@@ -12,7 +12,7 @@ namespace Fungible.Movement
         public override void OnClick()
         {
             if (movementAllowed)
-                Map.Instance.EnterRoom(roomMoveTo);
+                GameplayController.Instance.EnterRoom(roomMoveTo);
         }
     }
 }

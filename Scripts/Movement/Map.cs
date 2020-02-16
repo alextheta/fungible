@@ -1,48 +1,30 @@
-﻿using System.Collections;
-using Fungible.UI;
+﻿using Fungible.UI;
 using UnityEngine;
 
 namespace Fungible.Movement
 {
     public class Map : MonoBehaviour
     {
+        public Room firstRoom;
+
         public static Map Instance;
 
-        public Room firstRoom;
-        [SerializeField] private Room currentRoom;
+        private SpriteRenderer spriteRenderer;
+        private Room currentRoom;
 
-        public void EnterRoom(Room room)
+        public Room GetCurrentRoom()
         {
-            MovementHistoryController.Instance.AddPreviousRoom(currentRoom);
-            ChangeRoom(room);
+            return currentRoom;
+        }
+
+        public SpriteRenderer GetSpriteRenderer()
+        {
+            return spriteRenderer;
         }
 
         public void ChangeRoom(Room room)
         {
-            StartCoroutine(RoomTransitionCoroutine(room));
-        }
-        
-        private void Awake()
-        {
-            Instance = this;
-            GetComponent<SpriteRenderer>().sortingOrder = GlobalConfig.SortOrderBackground;
-        }
-
-        private void Start()
-        {
-            currentRoom = firstRoom;
-
-            currentRoom.OnEnter();
-            currentRoom.gameObject.SetActive(true);
-            
-            AdjustBackground();
-        }
-
-        private IEnumerator RoomTransitionCoroutine(Room room)
-        {
-            yield return StartCoroutine(Fader.Instance.FadeInCoroutine());
-            
-            if (currentRoom != null)
+            if (!ReferenceEquals(currentRoom, null))
             {
                 currentRoom.OnLeave();
                 currentRoom.gameObject.SetActive(false);
@@ -52,30 +34,48 @@ namespace Fungible.Movement
 
             currentRoom.OnEnter();
             currentRoom.gameObject.SetActive(true);
+        }
 
-            MovementHistoryController.Instance.UpdateBackButton();
-            
-            yield return StartCoroutine(Fader.Instance.FadeOutCoroutine());
+        private void Awake()
+        {
+            Instance = this;
+
+            spriteRenderer = GetComponent<SpriteRenderer>();
+            spriteRenderer.sortingOrder = GlobalConfig.SortOrderBackground;
+        }
+
+        private void Start()
+        {
+            currentRoom = firstRoom;
+
+            currentRoom.OnEnter();
+            currentRoom.gameObject.SetActive(true);
+
+            AdjustBackground();
         }
 
         public void AdjustBackground()
         {
-            SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
-            if (spriteRenderer == null)
-                return;
-
             MainPanel mainPanel = FindObjectOfType<MainPanel>();
-            if (mainPanel == null)
+            if (ReferenceEquals(mainPanel, null))
+            {
+                Debug.LogError("Main panel is not set to " + this);
                 return;
+            }
 
             Sprite sprite = spriteRenderer.sprite;
-
-            if (sprite == null)
+            if (ReferenceEquals(sprite, null))
             {
                 Debug.LogError("Sprite is not set to " + spriteRenderer);
                 return;
             }
 
+            if (ReferenceEquals(Camera.main, null))
+            {
+                Debug.LogError("Main camera is not exist");
+                return;
+            }
+            
             transform.position = Vector3.zero;
             transform.localScale = Vector3.one;
 

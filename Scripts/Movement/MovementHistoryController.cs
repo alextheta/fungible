@@ -26,7 +26,7 @@ namespace Fungible.Movement
         public void PopRoom()
         {
             if (history.Count != 0)
-                Map.Instance.ChangeRoom(history.Pop());
+                GameplayController.Instance.ChangeRoom(history.Pop());
         }
 
         public void UpdateBackButton()

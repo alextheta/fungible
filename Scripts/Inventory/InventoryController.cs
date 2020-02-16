@@ -82,7 +82,7 @@ namespace Fungible.Inventory
 
                 Item item = itemsInInventory[i];
                 itemHandler.item = item;
-                itemImage.sprite = item.GetComponent<SpriteRenderer>().sprite;
+                itemImage.sprite = item.icon;
                 itemImage.color = unselectedItemColor;
                 itemSlotObject.SetActive(true);
                 itemImageObject.SetActive(true);
