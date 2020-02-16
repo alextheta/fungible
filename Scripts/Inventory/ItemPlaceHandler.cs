@@ -19,7 +19,11 @@ namespace Fungible.Inventory
         public override void OnClick()
         {
             if (TryToApplySelectedItem() && CheckRequiredItems())
-                Debug.Log("Place Handler [" + this + "] is fully filled");
+            {
+                ObjectActivator activator = GetComponent<ObjectActivator>();
+                if (activator != null)
+                    activator.Invoke();
+            }
         }
 
         private bool TryToApplySelectedItem()

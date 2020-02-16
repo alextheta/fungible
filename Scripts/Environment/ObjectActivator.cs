@@ -3,7 +3,6 @@ using UnityEngine;
 
 namespace Fungible.Environment
 {
-    [RequireComponent(typeof(ItemPlaceHandler))]
     public class ObjectActivator : MonoBehaviour
     {
         public GameObject[] objectsToActivate;

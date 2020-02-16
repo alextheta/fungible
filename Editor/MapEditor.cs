@@ -2,7 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Fungible.Inventory;
 using Fungible.Movement;
 using UnityEditor;
 using UnityEngine;
@@ -13,6 +12,7 @@ namespace Fungible.Editor
     public class MapEditor : UnityEditor.Editor
     {
         private int firstRoomIndex;
+        private bool firstRoomIsSet;
         private int displayedRoomIndex;
         private bool showRoomInEditor;
         private string newRoomName;
@@ -45,7 +45,10 @@ namespace Fungible.Editor
 
             firstRoom = serializedObject.FindProperty("firstRoom");
             if (roomNames.Count > 0 && firstRoom.objectReferenceValue != null)
+            {
+                firstRoomIsSet = true;
                 firstRoomIndex = GetIndexByName(firstRoom.objectReferenceValue.name);
+            }
         }
 
         private void FirstRoomBlock()
@@ -55,8 +58,11 @@ namespace Fungible.Editor
             int previousIndex = firstRoomIndex;
             firstRoomIndex = EditorGUILayout.Popup(new GUIContent("First Room"), previousIndex, roomNames.ToArray());
 
-            if (previousIndex != firstRoomIndex)
+            if (!firstRoomIsSet)
+            {
                 firstRoom.objectReferenceValue = GetRoomByName(roomNames[firstRoomIndex]);
+                firstRoomIsSet = true;
+            }
 
             GUILayout.EndHorizontal();
         }
@@ -84,11 +90,11 @@ namespace Fungible.Editor
 
             if (showRoomInEditor && (!prevShowRoomInEditor || previousIndex != displayedRoomIndex))
             {
-                DisableRoom(previousIndex);
+                ResetDisplayedRooms();
                 SetDisplayedRoom(displayedRoomIndex);
             }
             else if (prevShowRoomInEditor && !showRoomInEditor)
-                ResetDisplayedRoom();
+                ResetDisplayedRooms();
 
             if (GUILayout.Button("Remove Room"))
             {
@@ -144,11 +150,12 @@ namespace Fungible.Editor
             map.AdjustBackground();
         }
 
-        private void ResetDisplayedRoom()
+        private void ResetDisplayedRooms()
         {
             Map map = (Map) target;
             map.GetComponent<SpriteRenderer>().sprite = null;
-            DisableRoom(displayedRoomIndex);
+            for (int i = 0; i < roomNames.Count; i++)
+                DisableRoom(i);
         }
 
         private void DisableRoom(int index)
@@ -183,6 +190,8 @@ namespace Fungible.Editor
             roomObject.name = name;
             roomObject.AddComponent<Room>();
             roomObject.transform.parent = map.transform;
+            roomObject.transform.localPosition = Vector3.zero;
+            roomObject.transform.localScale = Vector3.one;
             roomObject.SetActive(false);
             RebuildMapData();
         }

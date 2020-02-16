@@ -70,6 +70,12 @@ namespace Fungible.Movement
 
             Sprite sprite = spriteRenderer.sprite;
 
+            if (sprite == null)
+            {
+                Debug.LogError("Sprite is not set to " + spriteRenderer);
+                return;
+            }
+
             transform.position = Vector3.zero;
             transform.localScale = Vector3.one;
 
