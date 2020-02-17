@@ -2,7 +2,7 @@
 
 namespace Fungible.UI
 {
-    [RequireComponent(typeof(InOutAnimationController))]
+    [RequireComponent(typeof(AppearAnimationController))]
     public class Fader : MonoBehaviour
     {
         public static Fader Instance;

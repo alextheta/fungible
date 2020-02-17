@@ -10,12 +10,12 @@ namespace Fungible
     {
         public Map map;
         public GameObject textStoryLabelObject;
-        public InOutAnimationController faderAnimationController;
+        public AppearAnimationController faderAnimationController;
 
         public static GameplayController Instance;
         
         private TextMeshProUGUI textStoryLabel;
-        private InOutAnimationController textStoryLabelAnimationController;
+        //private AppearAnimationController textStoryLabelAnimationController;
 
         public void EnterRoom(Room room)
         {
@@ -32,24 +32,24 @@ namespace Fungible
         {
             ProxyControlsPanel.Instance.DisableControls();
 
-            yield return StartCoroutine(faderAnimationController.FadeInCoroutine());
+            yield return StartCoroutine(faderAnimationController.SetVisibleCoroutine());
             
             textStoryLabel.text = null;
             map.ChangeRoom(room);
             MovementHistoryController.Instance.UpdateBackButton();
-            textStoryLabelAnimationController.Fade();
+            //textStoryLabelAnimationController.SetVisible();
 
-            yield return StartCoroutine(faderAnimationController.FadeOutCoroutine());
+            yield return StartCoroutine(faderAnimationController.SetInvisibleCoroutine());
             
             ProxyControlsPanel.Instance.EnableControls();
-            textStoryLabelAnimationController.Unfade();
+            //textStoryLabelAnimationController.SetInvisible();
         }
 
         private void Awake()
         {
             Instance = this;
             textStoryLabel = textStoryLabelObject.GetComponent<TextMeshProUGUI>();
-            textStoryLabelAnimationController = textStoryLabelObject.GetComponent<InOutAnimationController>();
+            //textStoryLabelAnimationController = textStoryLabelObject.GetComponent<AppearAnimationController>();
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Fungible.Inventory;
+﻿using System.Collections;
+using Fungible.UI;
 using UnityEngine;
 
 namespace Fungible.Environment
@@ -11,10 +12,38 @@ namespace Fungible.Environment
         public void Invoke()
         {
             foreach (GameObject entity in objectsToActivate)
-                entity.SetActive(true);
-            
+                EnableObject(entity);
+
             foreach (GameObject entity in objectsToDeactivate)
-                entity.SetActive(false);
+                DisableObject(entity);
+        }
+
+        private void EnableObject(GameObject entity)
+        {
+            StartCoroutine(EnableObjectCoroutine(entity));
+        }
+
+        private void DisableObject(GameObject entity)
+        {
+            StartCoroutine(DisableObjectCoroutine(entity));
+        }
+
+        private IEnumerator EnableObjectCoroutine(GameObject entity)
+        {
+            entity.SetActive(true);
+            
+            AppearAnimationController animationController = entity.GetComponent<AppearAnimationController>();
+            if (!ReferenceEquals(animationController, null))
+                yield return animationController.SetVisibleCoroutine();
+        }
+        
+        private IEnumerator DisableObjectCoroutine(GameObject entity)
+        {
+            AppearAnimationController animationController = entity.GetComponent<AppearAnimationController>();
+            if (!ReferenceEquals(animationController, null))
+                yield return animationController.SetInvisibleCoroutine();
+            
+            entity.SetActive(false);
         }
     }
 }
