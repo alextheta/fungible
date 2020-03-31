@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using Fungible.Environment;
+using UnityEngine;
 
 namespace Fungible.Inventory
 {
-    public class ItemPlaceHandler : ClickableObject
+    [RequireComponent(typeof(BoxCollider2D))]
+    public class ItemPlaceHandler : MonoBehaviour, IClickableObject
     {
         [Serializable]
         public class ItemPlaced
@@ -15,7 +17,7 @@ namespace Fungible.Inventory
 
         public List<ItemPlaced> requiredItems;
 
-        public override void OnClick()
+        public void OnClick()
         {
             if (TryToApplySelectedItem() && CheckRequiredItems())
             {

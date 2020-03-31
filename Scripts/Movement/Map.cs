@@ -63,7 +63,7 @@ namespace Fungible.Movement
                 return;
             }
 
-            Sprite sprite = spriteRenderer.sprite;
+            Sprite sprite = GetComponent<SpriteRenderer>().sprite;
             if (ReferenceEquals(sprite, null))
             {
                 Debug.LogError("Sprite is not set to " + spriteRenderer);

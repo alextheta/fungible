@@ -8,7 +8,7 @@ namespace Fungible.UI
     public class ProxyControlsPanel : MonoBehaviour, IPointerDownHandler
     {
         public static ProxyControlsPanel Instance;
-        
+
         private LayerMask _uiLayerMask;
         private bool controlsAllowed = true;
 
@@ -16,7 +16,7 @@ namespace Fungible.UI
         {
             controlsAllowed = true;
         }
-        
+
         public void DisableControls()
         {
             controlsAllowed = false;
@@ -26,7 +26,7 @@ namespace Fungible.UI
         {
             return controlsAllowed;
         }
-        
+
         public void OnPointerDown(PointerEventData pointerEventData)
         {
             List<RaycastResult> raycastResults = new List<RaycastResult>();
@@ -43,20 +43,22 @@ namespace Fungible.UI
             foreach (RaycastResult result in raycastResults)
             {
                 GameObject touchedObject = result.gameObject;
-                ClickableObject clickableObject = touchedObject.GetComponent<ClickableObject>();
-                
                 if (!IsLayerInMask(touchedObject.layer, _uiLayerMask))
-                    clickableObject.OnClick();
-            
+                {
+                    foreach (IClickableObject clickableObject in touchedObject.GetComponents<IClickableObject>())
+                    {
+                        clickableObject.OnClick();
+                    }
+                }
             }
         }
-        
+
         private void Awake()
         {
             Instance = this;
             _uiLayerMask = LayerMask.NameToLayer("UI");
         }
-        
+
         private static bool IsLayerInMask(int layer, LayerMask layerMask)
         {
             return (layerMask & layer) == layerMask;

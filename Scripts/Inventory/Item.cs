@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using Fungible.Environment;
-using Fungible.UI;
 using UnityEngine;
 
 namespace Fungible.Inventory
 {
-    public class Item : ClickableObject
+    [RequireComponent(typeof(BoxCollider2D))]
+    public class Item : MonoBehaviour, IClickableObject
     {
         public Sprite icon;
 
@@ -20,7 +20,7 @@ namespace Fungible.Inventory
             animationController = GetComponent<AppearAnimationController>();
         }
 
-        public override void OnClick()
+        public void OnClick()
         {
             if (!clickable || !InventoryController.Instance.AddItem(this))
                 return;

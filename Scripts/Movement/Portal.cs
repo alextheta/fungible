@@ -4,12 +4,12 @@ using UnityEngine;
 namespace Fungible.Movement
 {
     [RequireComponent(typeof(BoxCollider2D))]
-    public class Portal : ClickableObject
+    public class Portal : MonoBehaviour, IClickableObject
     {
-        public bool movementAllowed;
-        public Room roomMoveTo;
+        [SerializeField] private bool movementAllowed;
+        [SerializeField] private Room roomMoveTo;
 
-        public override void OnClick()
+        public void OnClick()
         {
             if (movementAllowed)
                 GameplayController.Instance.EnterRoom(roomMoveTo);

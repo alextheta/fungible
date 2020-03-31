@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Fungible.UI
+namespace Fungible
 {
     [RequireComponent(typeof(Animator))]
     public class AppearAnimationController : MonoBehaviour
@@ -36,9 +36,9 @@ namespace Fungible.UI
         public IEnumerator SetInvisibleCoroutine()
         {
             SetInvisible();
-            
-            while (!animator.GetCurrentAnimatorStateInfo(0).IsName(InvisibleStateName))
-                yield return null;
+
+            /*while (!animator.GetCurrentAnimatorStateInfo(0).IsName(InvisibleStateName))
+                yield return null;*/
 
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
                 yield return null;
