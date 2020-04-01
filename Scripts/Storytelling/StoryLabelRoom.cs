@@ -1,10 +1,17 @@
-﻿namespace Fungible.Storytelling
+﻿using Fungible.Movement;
+
+namespace Fungible.Storytelling
 {
     public class StoryLabelRoom : StoryLabelBaseObject
     {
-        public void OnEnable()
+        private void Awake()
         {
-            Show();
+            GetComponent<Room>().enterEvent += Show;
+        }
+
+        private void OnDestroy()
+        {
+            GetComponent<Room>().enterEvent -= Show;
         }
     }
 }

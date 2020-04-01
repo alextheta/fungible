@@ -6,6 +6,7 @@ namespace Fungible.Storytelling
     {
         [SerializeField] protected string text;
         [SerializeField] protected bool showOnce;
+        
         private bool showed;
         
         protected void Show()
@@ -21,6 +22,7 @@ namespace Fungible.Storytelling
         public void SetText(string newText)
         {
             text = newText;
+            StoryLabelController.Instance.SetText(text);
         }
     }
 }

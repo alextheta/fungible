@@ -31,9 +31,9 @@ namespace Fungible.Movement
             }
 
             currentRoom = room;
-
-            currentRoom.OnEnter();
+            
             currentRoom.gameObject.SetActive(true);
+            currentRoom.OnEnter();
         }
 
         private void Awake()
@@ -48,8 +48,8 @@ namespace Fungible.Movement
         {
             currentRoom = firstRoom;
 
-            currentRoom.OnEnter();
             currentRoom.gameObject.SetActive(true);
+            currentRoom.OnEnter();
 
             AdjustBackground();
         }

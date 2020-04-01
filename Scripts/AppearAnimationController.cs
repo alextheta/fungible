@@ -8,7 +8,7 @@ namespace Fungible
     {
         private const string VisibleStateName = "Appear";
         private const string InvisibleStateName = "Disappear";
-        
+
         private Animator animator;
         private static readonly int VisibleValue = Animator.StringToHash("VisibleState");
 
@@ -32,18 +32,18 @@ namespace Fungible
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
                 yield return null;
         }
-        
+
         public IEnumerator SetInvisibleCoroutine()
         {
             SetInvisible();
 
-            /*while (!animator.GetCurrentAnimatorStateInfo(0).IsName(InvisibleStateName))
-                yield return null;*/
+            while (!animator.GetCurrentAnimatorStateInfo(0).IsName(InvisibleStateName))
+                yield return null;
 
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
                 yield return null;
         }
-        
+
         private void Awake()
         {
             animator = GetComponent<Animator>();
