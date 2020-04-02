@@ -5,8 +5,8 @@ using UnityEngine;
 
 namespace Fungible.Inventory
 {
-    [RequireComponent(typeof(BoxCollider2D))]
-    public class ItemPlaceHandler : MonoBehaviour, IClickableObject
+    [RequireComponent(typeof(ClickableObject))]
+    public class ItemPlaceHandler : MonoBehaviour
     {
         [Serializable]
         public class ItemPlaced
@@ -17,16 +17,26 @@ namespace Fungible.Inventory
 
         public List<ItemPlaced> requiredItems;
 
-        public void OnClick()
+        private void OnClick()
         {
-            if (TryToApplySelectedItem() && CheckRequiredItems())
-            {
-                ObjectActivator activator = GetComponent<ObjectActivator>();
-                if (activator != null)
-                    activator.Invoke();
-            }
+            if (!TryToApplySelectedItem() || !CheckRequiredItems())
+                return;
+
+            ObjectActivator activator = GetComponent<ObjectActivator>();
+            if (activator != null)
+                activator.Invoke();
         }
 
+        private void Awake()
+        {
+            GetComponent<ClickableObject>().ClickEvent += OnClick;
+        }
+
+        private void OnDestroy()
+        {
+            GetComponent<ClickableObject>().ClickEvent -= OnClick;
+        }
+        
         private bool TryToApplySelectedItem()
         {
             bool applied = false;

@@ -1,14 +1,25 @@
-﻿using Fungible.Environment;
+﻿using System;
+using Fungible.Environment;
 using UnityEngine;
 
 namespace Fungible.Storytelling
 {
-    [RequireComponent(typeof(BoxCollider2D))]
-    public class StoryLabelObject : StoryLabelBaseObject, IClickableObject 
+    [RequireComponent(typeof(ClickableObject))]
+    public class StoryLabelObject : StoryLabelBaseObject
     {
-        public void OnClick()
+        private void OnClick()
         {
             Show();
+        }
+        
+        private void Awake()
+        {
+            GetComponent<ClickableObject>().ClickEvent += OnClick;
+        }
+
+        private void OnDestroy()
+        {
+            GetComponent<ClickableObject>().ClickEvent -= OnClick;
         }
     }
 }

@@ -4,8 +4,8 @@ using UnityEngine;
 
 namespace Fungible.Inventory
 {
-    [RequireComponent(typeof(BoxCollider2D))]
-    public class Item : MonoBehaviour, IClickableObject
+    [RequireComponent(typeof(ClickableObject))]
+    public class Item : MonoBehaviour
     {
         public Sprite icon;
 
@@ -18,9 +18,15 @@ namespace Fungible.Inventory
             
             GetComponent<SpriteRenderer>().sortingOrder = GlobalConfig.SortOrderItem;
             animationController = GetComponent<AppearAnimationController>();
+            GetComponent<ClickableObject>().ClickEvent += OnClick;
         }
 
-        public void OnClick()
+        private void OnDestroy()
+        {
+            GetComponent<ClickableObject>().ClickEvent -= OnClick;
+        }
+
+        private void OnClick()
         {
             if (!clickable || !InventoryController.Instance.AddItem(this))
                 return;

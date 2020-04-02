@@ -45,7 +45,7 @@ namespace Fungible.UI
                 GameObject touchedObject = result.gameObject;
                 if (!IsLayerInMask(touchedObject.layer, _uiLayerMask))
                 {
-                    foreach (IClickableObject clickableObject in touchedObject.GetComponents<IClickableObject>())
+                    foreach (ClickableObject clickableObject in touchedObject.GetComponents<ClickableObject>())
                     {
                         clickableObject.OnClick();
                     }
