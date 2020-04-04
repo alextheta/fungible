@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Fungible.Environment;
 using UnityEngine;
 
@@ -16,11 +17,15 @@ namespace Fungible.Inventory
         }
 
         public List<ItemPlaced> requiredItems;
+        
+        private ClickableObject clickableObject;
 
         private void OnClick()
         {
             if (!TryToApplySelectedItem() || !CheckRequiredItems())
                 return;
+            
+            clickableObject.clickable = false;
 
             ObjectActivator activator = GetComponent<ObjectActivator>();
             if (activator != null)
@@ -29,24 +34,21 @@ namespace Fungible.Inventory
 
         private void Awake()
         {
-            GetComponent<ClickableObject>().ClickEvent += OnClick;
+            clickableObject = GetComponent<ClickableObject>();
+            clickableObject.ClickEvent += OnClick;
         }
 
         private void OnDestroy()
         {
-            GetComponent<ClickableObject>().ClickEvent -= OnClick;
+            clickableObject.ClickEvent -= OnClick;
         }
         
         private bool TryToApplySelectedItem()
         {
             bool applied = false;
             Item item = InventoryController.Instance.GetSelected();
-            for (int i = 0; i < requiredItems.Count; i++)
+            foreach (ItemPlaced checkedItem in requiredItems.Where(checkedItem => checkedItem.item == item))
             {
-                ItemPlaced checkedItem = requiredItems[i];
-                if (checkedItem.item != item)
-                    continue;
-
                 checkedItem.placed = true;
                 applied = InventoryController.Instance.RemoveItem(item);
                 break;

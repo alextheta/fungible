@@ -1,5 +1,4 @@
-﻿using System;
-using Fungible.Environment;
+﻿using Fungible.Environment;
 using UnityEngine;
 
 namespace Fungible.Storytelling
@@ -9,14 +8,17 @@ namespace Fungible.Storytelling
     {
         private void OnClick()
         {
+            if (!GetComponent<ClickableObject>().clickable)
+                return;
+
             Show();
         }
-        
+
         private void Awake()
         {
             GetComponent<ClickableObject>().ClickEvent += OnClick;
         }
-
+        
         private void OnDestroy()
         {
             GetComponent<ClickableObject>().ClickEvent -= OnClick;

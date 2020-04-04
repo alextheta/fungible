@@ -7,9 +7,13 @@ namespace Fungible.Environment
     {
         public delegate void ClickAction();
         public event ClickAction ClickEvent;
+        [SerializeField] public bool clickable;
         
         public void OnClick()
         {
+            if (!clickable)
+                return;
+
             ClickEvent?.Invoke();
         }
     }

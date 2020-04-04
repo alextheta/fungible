@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Fungible.Storytelling;
 using Fungible.UI;
 using UnityEngine;
 
@@ -39,6 +40,11 @@ namespace Fungible.Environment
         
         private IEnumerator DisableObjectCoroutine(GameObject entity)
         {
+            /*Debug.Log("DisableCoroutine " + gameObject);
+            StoryLabelObject storyLabelObject = entity.GetComponent<StoryLabelObject>();
+            if (storyLabelObject)
+                storyLabelObject.Unsubscribe();*/
+            
             AppearAnimationController animationController = entity.GetComponent<AppearAnimationController>();
             if (animationController)
                 yield return animationController.SetInvisibleCoroutine();

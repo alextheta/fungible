@@ -9,29 +9,26 @@ namespace Fungible.Inventory
     {
         public Sprite icon;
 
-        private bool clickable;
+        private ClickableObject clickableObject;
         private AppearAnimationController animationController;
 
         private void Awake()
         {
-            clickable = true;
-            
             GetComponent<SpriteRenderer>().sortingOrder = GlobalConfig.SortOrderItem;
+            clickableObject = GetComponent<ClickableObject>();
             animationController = GetComponent<AppearAnimationController>();
-            GetComponent<ClickableObject>().ClickEvent += OnClick;
+            clickableObject.ClickEvent += OnClick;
         }
 
         private void OnDestroy()
         {
-            GetComponent<ClickableObject>().ClickEvent -= OnClick;
+            clickableObject.ClickEvent -= OnClick;
         }
 
         private void OnClick()
         {
-            if (!clickable || !InventoryController.Instance.AddItem(this))
+            if (!InventoryController.Instance.AddItem(this))
                 return;
-
-            clickable = false;
 
             ObjectActivator activator = GetComponent<ObjectActivator>();
             if (activator != null)
