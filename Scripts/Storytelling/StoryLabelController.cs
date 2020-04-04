@@ -20,7 +20,12 @@ namespace Fungible.Storytelling
         {
             textMesh.text = text;
         }
-    
+
+        public void FinishAnimation()
+        {
+            animationController.CompleteAnimationImmediate();
+        }
+        
         private void Awake()
         {
             Instance = this;

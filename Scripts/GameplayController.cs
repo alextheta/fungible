@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using Fungible.Movement;
+using Fungible.Storytelling;
 using Fungible.UI;
 using UnityEngine;
 
@@ -30,7 +31,7 @@ namespace Fungible
 
             yield return StartCoroutine(faderAnimationController.SetVisibleCoroutine());
 
-            labelAnimationController.CompleteAnimationImmediate();
+            StoryLabelController.Instance.FinishAnimation();
             map.ChangeRoom(room);
             MovementHistoryController.Instance.UpdateBackButton();
 
