@@ -6,8 +6,8 @@ namespace Fungible.Movement
     {
         public delegate void RoomEvent();
 
-        public event RoomEvent enterEvent;
-        public event RoomEvent leaveEvent;
+        public event RoomEvent EnterEvent;
+        public event RoomEvent LeaveEvent;
         
         public string backgroundResourceName;
 
@@ -17,13 +17,13 @@ namespace Fungible.Movement
         {
             backgroundSprite = LoadSprite();
             Map.Instance.GetSpriteRenderer().sprite = backgroundSprite;
-            enterEvent?.Invoke();
+            EnterEvent?.Invoke();
         }
 
         public void OnLeave()
         {
             Resources.UnloadAsset(backgroundSprite);
-            leaveEvent?.Invoke();
+            LeaveEvent?.Invoke();
         }
 
         public Sprite LoadSprite()

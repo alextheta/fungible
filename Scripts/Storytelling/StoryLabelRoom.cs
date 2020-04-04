@@ -6,12 +6,12 @@ namespace Fungible.Storytelling
     {
         private void Awake()
         {
-            GetComponent<Room>().enterEvent += Show;
+            GetComponent<Room>().EnterEvent += Show;
         }
 
         private void OnDestroy()
         {
-            GetComponent<Room>().enterEvent -= Show;
+            GetComponent<Room>().EnterEvent -= Show;
         }
     }
 }

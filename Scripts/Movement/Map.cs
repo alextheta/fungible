@@ -24,7 +24,7 @@ namespace Fungible.Movement
 
         public void ChangeRoom(Room room)
         {
-            if (!ReferenceEquals(currentRoom, null))
+            if (currentRoom)
             {
                 currentRoom.OnLeave();
                 currentRoom.gameObject.SetActive(false);
@@ -57,20 +57,21 @@ namespace Fungible.Movement
         public void AdjustBackground()
         {
             MainPanel mainPanel = FindObjectOfType<MainPanel>();
-            if (ReferenceEquals(mainPanel, null))
+            Camera mainCamera = Camera.main;
+            if (!mainPanel)
             {
                 Debug.LogError("Main panel is not set to " + this);
                 return;
             }
 
             Sprite sprite = GetComponent<SpriteRenderer>().sprite;
-            if (ReferenceEquals(sprite, null))
+            if (!sprite)
             {
                 Debug.LogError("Sprite is not set to " + spriteRenderer);
                 return;
             }
 
-            if (ReferenceEquals(Camera.main, null))
+            if (!mainCamera)
             {
                 Debug.LogError("Main camera is not exist");
                 return;
@@ -79,8 +80,8 @@ namespace Fungible.Movement
             transform.position = Vector3.zero;
             transform.localScale = Vector3.one;
 
-            float worldScreenHeight = Camera.main.orthographicSize * 2.0f;
-            float worldScreenWidth = worldScreenHeight * Camera.main.aspect;
+            float worldScreenHeight = mainCamera.orthographicSize * 2.0f;
+            float worldScreenWidth = worldScreenHeight * mainCamera.aspect;
 
             Vector2 spriteSize = new Vector2(sprite.bounds.size.x, sprite.bounds.size.y);
             Vector2 coverPanelSize = mainPanel.GetWorldSize();

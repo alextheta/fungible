@@ -8,6 +8,7 @@ namespace Fungible
     {
         private const string VisibleStateName = "Appear";
         private const string InvisibleStateName = "Disappear";
+        private const string InvisibleAnimatorState = "Invisible";
 
         private Animator animator;
         private static readonly int VisibleValue = Animator.StringToHash("VisibleState");
@@ -42,6 +43,12 @@ namespace Fungible
 
             while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
                 yield return null;
+        }
+
+        public void CompleteAnimationImmediate()
+        {
+            SetInvisible();
+            animator.Play(InvisibleAnimatorState, -1, 1.0f);
         }
 
         private void Awake()

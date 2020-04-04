@@ -9,6 +9,7 @@ namespace Fungible
     {
         public Map map;
         public AppearAnimationController faderAnimationController;
+        public AppearAnimationController labelAnimationController;
 
         public static GameplayController Instance;
 
@@ -29,6 +30,7 @@ namespace Fungible
 
             yield return StartCoroutine(faderAnimationController.SetVisibleCoroutine());
 
+            labelAnimationController.CompleteAnimationImmediate();
             map.ChangeRoom(room);
             MovementHistoryController.Instance.UpdateBackButton();
 

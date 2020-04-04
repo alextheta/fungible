@@ -30,8 +30,9 @@ namespace Fungible.Storytelling
 
         private IEnumerator ShowLabelCoroutine()
         {
+            yield return null; /* Skip frame for animator purpose */
             animationController.SetVisible();
-            yield return null;
+            yield return null; /* Skip frame for animator purpose */
             yield return StartCoroutine(animationController.SetInvisibleCoroutine());
         }
     }

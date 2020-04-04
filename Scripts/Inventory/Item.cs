@@ -47,7 +47,7 @@ namespace Fungible.Inventory
 
         private IEnumerator SelfDisableCoroutine()
         {
-            if (ReferenceEquals(animationController, null))
+            if (!animationController)
                 yield return null;
             else
                 yield return animationController.SetInvisibleCoroutine();

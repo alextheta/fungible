@@ -6,9 +6,9 @@ namespace Fungible.Storytelling
     {
         [SerializeField] protected string text;
         [SerializeField] protected bool showOnce;
-        
+
         private bool showed;
-        
+
         protected void Show()
         {
             if (showOnce && showed)

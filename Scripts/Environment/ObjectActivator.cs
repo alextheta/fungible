@@ -33,14 +33,14 @@ namespace Fungible.Environment
             entity.SetActive(true);
             
             AppearAnimationController animationController = entity.GetComponent<AppearAnimationController>();
-            if (!ReferenceEquals(animationController, null))
+            if (animationController)
                 yield return animationController.SetVisibleCoroutine();
         }
         
         private IEnumerator DisableObjectCoroutine(GameObject entity)
         {
             AppearAnimationController animationController = entity.GetComponent<AppearAnimationController>();
-            if (!ReferenceEquals(animationController, null))
+            if (animationController)
                 yield return animationController.SetInvisibleCoroutine();
             
             entity.SetActive(false);
