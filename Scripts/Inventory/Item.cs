@@ -27,13 +27,13 @@ namespace Fungible.Inventory
 
         private void OnClick()
         {
-            if (!InventoryController.Instance.AddItem(this))
+            if (!clickableObject.clickable || !InventoryController.Instance.AddItem(this))
                 return;
 
             ObjectActivator activator = GetComponent<ObjectActivator>();
             if (activator != null)
                 activator.Invoke();
-            
+
             SelfDisable();
         }
 

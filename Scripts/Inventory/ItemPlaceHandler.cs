@@ -17,14 +17,14 @@ namespace Fungible.Inventory
         }
 
         public List<ItemPlaced> requiredItems;
-        
+
         private ClickableObject clickableObject;
 
         private void OnClick()
         {
-            if (!TryToApplySelectedItem() || !CheckRequiredItems())
+            if (!clickableObject.clickable || !TryToApplySelectedItem() || !CheckRequiredItems())
                 return;
-            
+
             clickableObject.clickable = false;
 
             ObjectActivator activator = GetComponent<ObjectActivator>();
@@ -42,7 +42,7 @@ namespace Fungible.Inventory
         {
             clickableObject.ClickEvent -= OnClick;
         }
-        
+
         private bool TryToApplySelectedItem()
         {
             bool applied = false;

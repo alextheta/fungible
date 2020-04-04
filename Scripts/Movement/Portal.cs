@@ -22,6 +22,9 @@ namespace Fungible.Movement
 
         private void OnClick()
         {
+            if (!clickableObject.clickable)
+                return;
+            
             GameplayController.Instance.EnterRoom(roomMoveTo);
         }
     }

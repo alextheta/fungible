@@ -43,12 +43,12 @@ namespace Fungible.UI
             foreach (RaycastResult result in raycastResults)
             {
                 GameObject touchedObject = result.gameObject;
-                if (!IsLayerInMask(touchedObject.layer, _uiLayerMask))
+                if (IsLayerInMask(touchedObject.layer, _uiLayerMask))
+                    continue;
+                
+                foreach (ClickableObject clickableObject in touchedObject.GetComponents<ClickableObject>())
                 {
-                    foreach (ClickableObject clickableObject in touchedObject.GetComponents<ClickableObject>())
-                    {
-                        clickableObject.OnClick();
-                    }
+                    clickableObject.OnClick();
                 }
             }
         }

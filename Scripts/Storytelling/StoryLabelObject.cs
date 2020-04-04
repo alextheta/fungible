@@ -1,4 +1,5 @@
-﻿using Fungible.Environment;
+﻿using System.Collections;
+using Fungible.Environment;
 using UnityEngine;
 
 namespace Fungible.Storytelling
@@ -6,22 +7,30 @@ namespace Fungible.Storytelling
     [RequireComponent(typeof(ClickableObject))]
     public class StoryLabelObject : StoryLabelBaseObject
     {
+        private ClickableObject clickableObject;
+
         private void OnClick()
         {
-            if (!GetComponent<ClickableObject>().clickable)
-                return;
-
-            Show();
+            StartCoroutine(ShowCoroutine());
         }
 
         private void Awake()
         {
-            GetComponent<ClickableObject>().ClickEvent += OnClick;
+            clickableObject = GetComponent<ClickableObject>();
+            clickableObject.ClickEvent += OnClick;
         }
         
         private void OnDestroy()
         {
-            GetComponent<ClickableObject>().ClickEvent -= OnClick;
+            clickableObject.ClickEvent -= OnClick;
+        }
+
+        private IEnumerator ShowCoroutine()
+        {
+            yield return null; /* Skip frame for click event order execution purpose */
+
+            if (clickableObject.clickable)
+                Show();
         }
     }
 }
