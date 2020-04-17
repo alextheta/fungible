@@ -54,6 +54,7 @@ namespace Fungible
         private void Awake()
         {
             animator = GetComponent<Animator>();
+            animator.keepAnimatorControllerStateOnDisable = true;
         }
     }
 }
