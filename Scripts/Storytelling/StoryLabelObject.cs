@@ -11,7 +11,8 @@ namespace Fungible.Storytelling
 
         private void OnClick()
         {
-            StartCoroutine(ShowCoroutine());
+            if (gameObject.activeSelf)
+                StartCoroutine(ShowCoroutine());
         }
 
         private void Awake()
