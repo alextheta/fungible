@@ -1,6 +1,5 @@
 ﻿using System.Collections;
-using Fungible.Storytelling;
-using Fungible.UI;
+using Fungible.Inventory;
 using UnityEngine;
 
 namespace Fungible.Environment
@@ -10,7 +9,40 @@ namespace Fungible.Environment
         public GameObject[] objectsToActivate;
         public GameObject[] objectsToDeactivate;
 
-        public void Invoke()
+        private void Awake()
+        {
+            Item item = GetComponent<Item>();
+            if (item)
+                item.ClickEvent += OnClick;
+            
+            ItemPlaceHandler itemPlaceHandler = GetComponent<ItemPlaceHandler>();
+            if (itemPlaceHandler)
+                itemPlaceHandler.ClickEvent += OnClick;
+
+            if (!item && !itemPlaceHandler)
+            {
+                ClickableObject clickableObject = GetComponent<ClickableObject>();
+                if (clickableObject)
+                    clickableObject.ClickEvent += OnClick;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            Item item = GetComponent<Item>();
+            if (item)
+                item.ClickEvent -= OnClick;
+            
+            ItemPlaceHandler itemPlaceHandler = GetComponent<ItemPlaceHandler>();
+            if (itemPlaceHandler)
+                itemPlaceHandler.ClickEvent -= OnClick;
+            
+            ClickableObject clickableObject = GetComponent<ClickableObject>();
+            if (clickableObject)
+                clickableObject.ClickEvent -= OnClick;
+        }
+        
+        private void OnClick()
         {
             foreach (GameObject entity in objectsToActivate)
                 EnableObject(entity);

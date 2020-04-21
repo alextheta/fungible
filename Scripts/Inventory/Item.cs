@@ -8,6 +8,8 @@ namespace Fungible.Inventory
     public class Item : MonoBehaviour
     {
         public Sprite icon;
+        public delegate void ClickAction();
+        public event ClickAction ClickEvent;
 
         private ClickableObject clickableObject;
         private AppearAnimationController animationController;
@@ -30,9 +32,7 @@ namespace Fungible.Inventory
             if (!clickableObject.clickable || !InventoryController.Instance.AddItem(this))
                 return;
 
-            ObjectActivator activator = GetComponent<ObjectActivator>();
-            if (activator != null)
-                activator.Invoke();
+            ClickEvent?.Invoke();
 
             SelfDisable();
         }

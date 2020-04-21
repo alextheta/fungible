@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Fungible.Environment;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 namespace Fungible.Inventory
 {
@@ -17,6 +18,8 @@ namespace Fungible.Inventory
         }
 
         public List<ItemPlaced> requiredItems;
+        public delegate void ClickAction();
+        public event ClickAction ClickEvent;
 
         private ClickableObject clickableObject;
 
@@ -27,9 +30,7 @@ namespace Fungible.Inventory
 
             clickableObject.clickable = false;
 
-            ObjectActivator activator = GetComponent<ObjectActivator>();
-            if (activator != null)
-                activator.Invoke();
+            ClickEvent?.Invoke();
         }
 
         private void Awake()
