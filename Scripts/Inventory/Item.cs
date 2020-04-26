@@ -17,8 +17,8 @@ namespace Fungible.Inventory
         private void Awake()
         {
             GetComponent<SpriteRenderer>().sortingOrder = GlobalConfig.SortOrderItem;
-            clickableObject = GetComponent<ClickableObject>();
             animationController = GetComponent<AppearAnimationController>();
+            clickableObject = GetComponent<ClickableObject>();
             clickableObject.ClickEvent += OnClick;
         }
 
