@@ -22,7 +22,7 @@ namespace Fungible.Movement
 
         public void OnLeave()
         {
-            Resources.UnloadAsset(backgroundSprite);
+            Resources.UnloadUnusedAssets();
             LeaveEvent?.Invoke();
         }
 
