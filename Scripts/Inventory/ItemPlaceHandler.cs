@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Fungible.Environment;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace Fungible.Inventory
 {
