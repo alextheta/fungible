@@ -1,44 +1,46 @@
 ﻿using System.Collections;
-using Fungible;
 using Fungible.Events;
-using Fungible.Inventory;
 using UnityEngine;
 
-[RequireComponent(typeof(Item))]
-public class ItemPickupEventListener : BaseEventListener
+namespace Fungible.Inventory
 {
-    private AppearAnimationController _animationController;
-    
-    private void Awake()
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(Item))]
+    public class ItemPickupEventListener : BaseEventListener
     {
-        _animationController = GetComponent<AppearAnimationController>();
-    }
+        private AppearAnimationController _animationController;
     
-    public override void Event()
-    {
-        Item item = GetComponent<Item>();
-        if (!InventoryController.Instance.AddItem(item))
-            return;
+        private void Awake()
+        {
+            _animationController = GetComponent<AppearAnimationController>();
+        }
+    
+        public override void Event()
+        {
+            Item item = GetComponent<Item>();
+            if (!InventoryController.Instance.AddItem(item))
+                return;
 
-        ItemPickupEventSender eventSender = GetComponent<ItemPickupEventSender>();
-        if (eventSender)
-            eventSender.Invoke();
+            ItemPickupEventSender eventSender = GetComponent<ItemPickupEventSender>();
+            if (eventSender)
+                eventSender.Invoke();
             
-        SelfDisable();
-    }
+            SelfDisable();
+        }
 
-    private void SelfDisable()
-    {
-        StartCoroutine(SelfDisableCoroutine());
-    }
+        private void SelfDisable()
+        {
+            StartCoroutine(SelfDisableCoroutine());
+        }
 
-    private IEnumerator SelfDisableCoroutine()
-    {
-        if (!_animationController)
-            yield return null;
-        else
-            yield return _animationController.SetInvisibleCoroutine();
+        private IEnumerator SelfDisableCoroutine()
+        {
+            if (!_animationController)
+                yield return null;
+            else
+                yield return _animationController.SetInvisibleCoroutine();
 
-        gameObject.SetActive(false);
+            gameObject.SetActive(false);
+        }
     }
 }

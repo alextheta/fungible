@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.ComponentModel;
-using Fungible.Environment;
-using Fungible.Events;
+﻿using Fungible.Events;
 using UnityEngine;
 
 namespace Fungible.Storytelling
@@ -19,14 +16,7 @@ namespace Fungible.Storytelling
         public override void Event()
         {
             if (gameObject.activeSelf)
-                StartCoroutine(ShowCoroutine());
-        }
-
-        private IEnumerator ShowCoroutine()
-        {
-            yield return null; /* Skip frame for click event order execution purpose */
-
-            _storyObject.Show();
+                _storyObject.Show();
         }
     }
 }

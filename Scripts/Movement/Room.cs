@@ -11,12 +11,12 @@ namespace Fungible.Movement
         
         public string backgroundResourceName;
 
-        private Sprite backgroundSprite;
+        private Sprite _backgroundSprite;
 
         public void OnEnter()
         {
-            backgroundSprite = LoadSprite();
-            Map.Instance.GetSpriteRenderer().sprite = backgroundSprite;
+            _backgroundSprite = LoadSprite();
+            Map.Instance.GetSpriteRenderer().sprite = _backgroundSprite;
             EnterEvent?.Invoke();
         }
 

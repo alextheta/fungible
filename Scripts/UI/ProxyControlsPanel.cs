@@ -11,23 +11,22 @@ namespace Fungible.UI
     {
         public static ProxyControlsPanel Instance;
 
-        private LayerMask uiLayerMask;
-        private Camera mainCamera;
-        private bool controlsAllowed = true;
+        private LayerMask _uiLayerMask;
+        private bool _controlsAllowed = true;
 
         public void EnableControls()
         {
-            controlsAllowed = true;
+            _controlsAllowed = true;
         }
 
         public void DisableControls()
         {
-            controlsAllowed = false;
+            _controlsAllowed = false;
         }
 
         public bool ControlsAllowed()
         {
-            return controlsAllowed;
+            return _controlsAllowed;
         }
 
         public void OnPointerDown(PointerEventData pointerEventData)
@@ -43,14 +42,13 @@ namespace Fungible.UI
 
         private void ProcessRaycastResults(List<RaycastResult> raycastResults)
         {
-            raycastResults.RemoveAll((result => IsLayerInMask(result.gameObject.layer, uiLayerMask)));
+            raycastResults.RemoveAll((result => IsLayerInMask(result.gameObject.layer, _uiLayerMask)));
 
             try
             {
                 raycastResults.Sort((a, b) =>
                 {
-                    // sort in reverse order
-                    Debug.Log("A [" + a.gameObject + "] B [" + b.gameObject + "]");
+                    /* Sort in reverse order */
                     int aSortingOrder = a.gameObject.GetComponent<SortingGroup>().sortingOrder;
                     int bSortingOrder = b.gameObject.GetComponent<SortingGroup>().sortingOrder;
 
@@ -73,7 +71,6 @@ namespace Fungible.UI
 
                     ClickEventSender eventSender = raycastResult.gameObject.GetComponent<ClickEventSender>();
                     eventSender.Invoke();
-                    Debug.Log("Proxy click on " + eventSender);
                 }
             }
         }
@@ -81,8 +78,7 @@ namespace Fungible.UI
         private void Awake()
         {
             Instance = this;
-            uiLayerMask = LayerMask.NameToLayer("UI");
-            mainCamera = Camera.main;
+            _uiLayerMask = LayerMask.NameToLayer("UI");
         }
 
         private static bool IsLayerInMask(int layer, LayerMask layerMask)

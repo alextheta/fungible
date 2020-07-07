@@ -10,7 +10,6 @@ namespace Fungible
     {
         public Map map;
         public AppearAnimationController faderAnimationController;
-        public AppearAnimationController labelAnimationController;
 
         public static GameplayController Instance;
 

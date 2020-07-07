@@ -7,17 +7,17 @@ namespace Fungible.Movement
     {
         [SerializeField] private Color color;
         
-        private Color cachedColor;
+        private Color _cachedColor;
 
         private void OnEnable()
         {
-            cachedColor = Map.Instance.GetSpriteRenderer().color;
+            _cachedColor = Map.Instance.GetSpriteRenderer().color;
             Map.Instance.GetSpriteRenderer().color = color;
         }
 
         private void OnDisable()
         {
-            Map.Instance.GetSpriteRenderer().color = cachedColor;
+            Map.Instance.GetSpriteRenderer().color = _cachedColor;
         }
     }
 }

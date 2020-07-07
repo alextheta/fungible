@@ -9,45 +9,45 @@ namespace Fungible.Movement
 
         public static Map Instance;
 
-        private SpriteRenderer spriteRenderer;
-        private Room currentRoom;
+        private SpriteRenderer _spriteRenderer;
+        private Room _currentRoom;
 
         public Room GetCurrentRoom()
         {
-            return currentRoom;
+            return _currentRoom;
         }
 
         public SpriteRenderer GetSpriteRenderer()
         {
-            return spriteRenderer;
+            return _spriteRenderer;
         }
 
         public void ChangeRoom(Room room)
         {
-            if (currentRoom)
+            if (_currentRoom)
             {
-                currentRoom.OnLeave();
-                currentRoom.gameObject.SetActive(false);
+                _currentRoom.OnLeave();
+                _currentRoom.gameObject.SetActive(false);
             }
 
-            currentRoom = room;
+            _currentRoom = room;
             
-            currentRoom.gameObject.SetActive(true);
-            currentRoom.OnEnter();
+            _currentRoom.gameObject.SetActive(true);
+            _currentRoom.OnEnter();
         }
 
         private void Awake()
         {
             Instance = this;
-            spriteRenderer = GetComponent<SpriteRenderer>();
+            _spriteRenderer = GetComponent<SpriteRenderer>();
         }
 
         private void Start()
         {
-            currentRoom = firstRoom;
+            _currentRoom = firstRoom;
 
-            currentRoom.gameObject.SetActive(true);
-            currentRoom.OnEnter();
+            _currentRoom.gameObject.SetActive(true);
+            _currentRoom.OnEnter();
 
             AdjustBackground();
         }
@@ -65,7 +65,7 @@ namespace Fungible.Movement
             Sprite sprite = GetComponent<SpriteRenderer>().sprite;
             if (!sprite)
             {
-                Debug.LogError("Sprite is not set to " + spriteRenderer);
+                Debug.LogError("Sprite is not set to " + _spriteRenderer);
                 return;
             }
 

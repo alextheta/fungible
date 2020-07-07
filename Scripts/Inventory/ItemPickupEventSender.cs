@@ -1,9 +1,11 @@
 ﻿using Fungible.Events;
-using Fungible.Inventory;
 using UnityEngine;
 
-[RequireComponent(typeof(Item))]
-public class ItemPickupEventSender : BaseEventSender
+namespace Fungible.Inventory
 {
-
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(ItemPickupEventListener))]
+    public class ItemPickupEventSender : BaseEventSender
+    {
+    }
 }

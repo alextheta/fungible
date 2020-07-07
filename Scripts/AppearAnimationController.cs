@@ -10,27 +10,27 @@ namespace Fungible
         private const string InvisibleStateName = "Disappear";
         private const string InvisibleAnimatorState = "Invisible";
 
-        private Animator animator;
+        private Animator _animator;
         private static readonly int VisibleValue = Animator.StringToHash("VisibleState");
 
         public void SetVisible()
         {
-            animator.SetBool(VisibleValue, true);
+            _animator.SetBool(VisibleValue, true);
         }
 
         public void SetInvisible()
         {
-            animator.SetBool(VisibleValue, false);
+            _animator.SetBool(VisibleValue, false);
         }
 
         public IEnumerator SetVisibleCoroutine()
         {
             SetVisible();
 
-            while (!animator.GetCurrentAnimatorStateInfo(0).IsName(VisibleStateName))
+            while (!_animator.GetCurrentAnimatorStateInfo(0).IsName(VisibleStateName))
                 yield return null;
 
-            while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
                 yield return null;
         }
 
@@ -38,23 +38,23 @@ namespace Fungible
         {
             SetInvisible();
 
-            while (!animator.GetCurrentAnimatorStateInfo(0).IsName(InvisibleStateName))
+            while (!_animator.GetCurrentAnimatorStateInfo(0).IsName(InvisibleStateName))
                 yield return null;
 
-            while (animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
                 yield return null;
         }
 
         public void CompleteAnimationImmediate()
         {
             SetInvisible();
-            animator.Play(InvisibleAnimatorState, -1, 1.0f);
+            _animator.Play(InvisibleAnimatorState, -1, 1.0f);
         }
 
         private void Awake()
         {
-            animator = GetComponent<Animator>();
-            animator.keepAnimatorControllerStateOnDisable = true;
+            _animator = GetComponent<Animator>();
+            _animator.keepAnimatorControllerStateOnDisable = true;
         }
     }
 }

@@ -8,8 +8,8 @@ namespace Fungible.Storytelling
     {
         public static StoryLabelController Instance;
 
-        private AppearAnimationController animationController;
-        private TextMeshProUGUI textMesh;
+        private AppearAnimationController _animationController;
+        private TextMeshProUGUI _textMesh;
 
         public void Show()
         {
@@ -18,27 +18,27 @@ namespace Fungible.Storytelling
 
         public void SetText(string text)
         {
-            textMesh.text = text;
+            _textMesh.text = text;
         }
 
         public void FinishAnimation()
         {
-            animationController.CompleteAnimationImmediate();
+            _animationController.CompleteAnimationImmediate();
         }
         
         private void Awake()
         {
             Instance = this;
-            animationController = GetComponent<AppearAnimationController>();
-            textMesh = GetComponent<TextMeshProUGUI>();
+            _animationController = GetComponent<AppearAnimationController>();
+            _textMesh = GetComponent<TextMeshProUGUI>();
         }
 
         private IEnumerator ShowLabelCoroutine()
         {
             yield return null; /* Skip frame for animator purpose */
-            animationController.SetVisible();
+            _animationController.SetVisible();
             yield return null; /* Skip frame for animator purpose */
-            yield return StartCoroutine(animationController.SetInvisibleCoroutine());
+            yield return StartCoroutine(_animationController.SetInvisibleCoroutine());
         }
     }
 }

@@ -9,29 +9,29 @@ namespace Fungible.Movement
         
         public static MovementHistoryController Instance;
 
-        private Stack<Room> history;
+        private Stack<Room> _history;
 
         private void Awake()
         {
             Instance = this;
-            history = new Stack<Room>();
+            _history = new Stack<Room>();
         }
 
         public void AddPreviousRoom(Room room)
         {
             if (room != null)
-                history.Push(room);
+                _history.Push(room);
         }
 
         public void PopRoom()
         {
-            if (history.Count != 0)
-                GameplayController.Instance.ChangeRoom(history.Pop());
+            if (_history.Count != 0)
+                GameplayController.Instance.ChangeRoom(_history.Pop());
         }
 
         public void UpdateBackButton()
         {
-            backButton.SetActive(history.Count != 0);
+            backButton.SetActive(_history.Count != 0);
         }
     }
 }

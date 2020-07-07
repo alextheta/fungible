@@ -3,7 +3,8 @@ using UnityEngine;
 
 namespace Fungible.Inventory
 {
-    [RequireComponent(typeof(ItemPlace))]
+    [DisallowMultipleComponent]
+    [RequireComponent(typeof(ItemPlaceEventListener))]
     public class ItemPlaceEventSender : BaseEventSender
     {
     }
