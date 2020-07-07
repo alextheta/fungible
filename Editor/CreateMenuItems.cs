@@ -12,7 +12,6 @@ namespace Fungible.Editor
         public static void CreateMainController()
         {
             GameObject controller = new GameObject("Controller");
-            controller.AddComponent<GlobalConfig>();
             controller.AddComponent<MovementHistoryController>();
             controller.AddComponent<InventoryController>();
             controller.transform.localPosition = Vector3.zero;
@@ -56,7 +55,7 @@ namespace Fungible.Editor
         public static void CreateItemPlaceHandler()
         {
             GameObject itemPlaceHandler = new GameObject("ItemPlaceHandler");
-            itemPlaceHandler.AddComponent<ItemPlaceHandler>();
+            itemPlaceHandler.AddComponent<ItemPlace>();
             itemPlaceHandler.GetComponent<BoxCollider2D>().size = Vector2.one;
             itemPlaceHandler.transform.parent = Selection.activeTransform;
             itemPlaceHandler.transform.localPosition = Vector3.zero;

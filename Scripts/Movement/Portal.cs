@@ -1,30 +1,14 @@
-﻿using Fungible.Environment;
+﻿using Fungible.Events;
 using UnityEngine;
 
 namespace Fungible.Movement
 {
-    [RequireComponent(typeof(ClickableObject))]
-    public class Portal : MonoBehaviour
+    public class Portal : BaseEventListener
     {
-        private ClickableObject clickableObject;
         [SerializeField] private Room roomMoveTo;
 
-        private void Awake()
+        public override void Event()
         {
-            clickableObject = GetComponent<ClickableObject>();
-            clickableObject.ClickEvent += OnClick;
-        }
-
-        private void OnDestroy()
-        {
-            clickableObject.ClickEvent -= OnClick;
-        }
-
-        private void OnClick()
-        {
-            if (!clickableObject.clickable)
-                return;
-            
             GameplayController.Instance.EnterRoom(roomMoveTo);
         }
     }

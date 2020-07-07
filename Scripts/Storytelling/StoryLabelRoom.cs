@@ -2,7 +2,7 @@
 
 namespace Fungible.Storytelling
 {
-    public class StoryLabelRoom : StoryLabelBaseObject
+    public class StoryLabelRoom : StoryLabelObject
     {
         private void Awake()
         {

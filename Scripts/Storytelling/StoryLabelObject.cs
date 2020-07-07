@@ -1,37 +1,27 @@
-﻿using System.Collections;
-using Fungible.Environment;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Fungible.Storytelling
 {
-    [RequireComponent(typeof(ClickableObject))]
-    public class StoryLabelObject : StoryLabelBaseObject
+    public class StoryLabelObject : MonoBehaviour
     {
-        private ClickableObject clickableObject;
+        [SerializeField] protected string text;
+        [SerializeField] protected bool showOnce;
 
-        private void OnClick()
+        private bool _showed;
+
+        protected internal void Show()
         {
-            if (gameObject.activeSelf)
-                StartCoroutine(ShowCoroutine());
+            if (showOnce && _showed)
+                return;
+
+            StoryLabelController.Instance.SetText(text);
+            StoryLabelController.Instance.Show();
+            _showed = true;
         }
 
-        private void Awake()
+        public void SetText(string newText)
         {
-            clickableObject = GetComponent<ClickableObject>();
-            clickableObject.ClickEvent += OnClick;
-        }
-        
-        private void OnDestroy()
-        {
-            clickableObject.ClickEvent -= OnClick;
-        }
-
-        private IEnumerator ShowCoroutine()
-        {
-            yield return null; /* Skip frame for click event order execution purpose */
-
-            if (clickableObject.clickable)
-                Show();
+            text = newText;
         }
     }
 }

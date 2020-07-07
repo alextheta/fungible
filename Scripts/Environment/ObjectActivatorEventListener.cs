@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using Fungible.Events;
+using UnityEngine;
 
 namespace Fungible.Environment
 {
     [RequireComponent(typeof(ObjectActivator))]
-    public class ItemObjectActivator : ItemDrivenObject
+    public class ObjectActivatorEventListener : BaseEventListener
     {
-        protected override void OnClick()
+        public override void Event()
         {
             GetComponent<ObjectActivator>().Invoke();
         }

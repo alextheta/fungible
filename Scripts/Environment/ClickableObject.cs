@@ -1,20 +1,22 @@
-﻿using UnityEngine;
+﻿using System.Diagnostics.Tracing;
+using UnityEngine;
 
 namespace Fungible.Environment
 {
-    [RequireComponent(typeof(BoxCollider2D))]
-    public class ClickableObject : MonoBehaviour
+    [RequireComponent(typeof(ClickEventSender))]
+    public abstract class ClickableObject : EventListener
     {
-        public delegate void ClickAction();
-        public event ClickAction ClickEvent;
-        [SerializeField] public bool clickable;
-        
-        public void OnClick()
+        private ClickEventSender _clickEventSender;
+    
+        /*protected void Awake()
         {
-            if (!clickable)
-                return;
-
-            ClickEvent?.Invoke();
+            _clickEventSender = GetComponent<ClickEventSender>();
+            _clickEventSender.Subscribe(this);
         }
+    
+        protected void OnDestroy()
+        {
+            _clickEventSender.Unsubscribe(this);
+        }*/
     }
 }

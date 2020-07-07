@@ -39,9 +39,7 @@ namespace Fungible.Movement
         private void Awake()
         {
             Instance = this;
-
             spriteRenderer = GetComponent<SpriteRenderer>();
-            spriteRenderer.sortingOrder = GlobalConfig.SortOrderBackground;
         }
 
         private void Start()
