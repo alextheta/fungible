@@ -10,11 +10,6 @@ namespace Fungible.Events
     {
         [SerializeField] private List<BaseEventListener> eventListeners;
 
-        public BaseEventSender()
-        {
-            eventListeners = new List<BaseEventListener>();
-        }
-
         public void Subscribe(BaseEventListener listener)
         {
             if (eventListeners != null)
@@ -30,7 +25,7 @@ namespace Fungible.Events
             else
                 Debug.LogError(this + " Unsubscribe: Event Listener list is null");
         }
-    
+
         public void Invoke()
         {
             if (eventListeners == null)

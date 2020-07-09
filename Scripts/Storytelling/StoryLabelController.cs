@@ -23,7 +23,8 @@ namespace Fungible.Storytelling
 
         public void FinishAnimation()
         {
-            _animationController.CompleteAnimationImmediate();
+            _animationController.SetVisibilityState(false);
+            _animationController.DisappearImmediate();
         }
         
         private void Awake()
@@ -36,7 +37,7 @@ namespace Fungible.Storytelling
         private IEnumerator ShowLabelCoroutine()
         {
             yield return null; /* Skip frame for animator purpose */
-            _animationController.SetVisible();
+            _animationController.SetVisibilityState(true);
             yield return null; /* Skip frame for animator purpose */
             yield return StartCoroutine(_animationController.SetInvisibleCoroutine());
         }

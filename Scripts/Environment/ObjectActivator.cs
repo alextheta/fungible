@@ -24,7 +24,10 @@ namespace Fungible.Environment
 
         private void DisableObject(GameObject entity)
         {
-            StartCoroutine(DisableObjectCoroutine(entity));
+            if (entity.activeInHierarchy)
+                StartCoroutine(DisableObjectCoroutine(entity));
+            else
+                entity.SetActive(false);
         }
 
         private IEnumerator EnableObjectCoroutine(GameObject entity)
