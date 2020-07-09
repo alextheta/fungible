@@ -20,7 +20,7 @@ namespace Fungible.Inventory
         public bool TryToApplySelectedItem()
         {
             bool applied = false;
-            Item item = InventoryController.Instance.GetSelected();
+            Item item = InventoryController.Instance.GetSelectedItem();
             foreach (ItemPlaced checkedItem in requiredItems.Where(checkedItem => checkedItem.item == item))
             {
                 checkedItem.placed = true;

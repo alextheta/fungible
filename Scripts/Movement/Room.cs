@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Fungible.Inventory;
+using UnityEngine;
 
 namespace Fungible.Movement
 {
@@ -8,7 +9,7 @@ namespace Fungible.Movement
 
         public event RoomEvent EnterEvent;
         public event RoomEvent LeaveEvent;
-        
+
         public string backgroundResourceName;
 
         private Sprite _backgroundSprite;
@@ -23,6 +24,7 @@ namespace Fungible.Movement
         public void OnLeave()
         {
             Resources.UnloadUnusedAssets();
+            InventoryController.Instance.SelectItem(null);
             LeaveEvent?.Invoke();
         }
 

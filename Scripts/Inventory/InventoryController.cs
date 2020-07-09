@@ -18,61 +18,61 @@ namespace Fungible.Inventory
 
         public static InventoryController Instance;
 
-        private InventoryItemHandler selectedItemHandler;
-        private List<Item> itemsInInventory;
+        private InventoryItemHandler _selectedItemHandler;
+        private List<Item> _itemsInInventory;
 
         public bool AddItem(Item item)
         {
-            if (itemsInInventory.Count >= allowedItemCount)
+            if (_itemsInInventory.Count >= allowedItemCount)
                 return false;
             
-            itemsInInventory.Add(item);
+            _itemsInInventory.Add(item);
             UpdateInventoryPanel();
             return true;
         }
         
         public bool RemoveItem(Item item)
         {
-            if (itemsInInventory.Count <= 0)
+            if (_itemsInInventory.Count <= 0)
                 return false;
 
-            itemsInInventory.Remove(item);
+            _itemsInInventory.Remove(item);
             UpdateInventoryPanel();
             return true;
         }
 
         public void SelectItem(InventoryItemHandler itemHandler)
         {
-            if (selectedItemHandler != null)
+            if (_selectedItemHandler != null)
             {
-                Image itemImage = GetItemImageObjectInSlot(selectedItemHandler.gameObject).GetComponent<Image>();
+                Image itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject).GetComponent<Image>();
                 itemImage.color = unselectedItemColor;
             }
 
-            selectedItemHandler = itemHandler != selectedItemHandler ? itemHandler : null;
+            _selectedItemHandler = itemHandler != _selectedItemHandler ? itemHandler : null;
 
-            if (selectedItemHandler != null)
+            if (_selectedItemHandler != null)
             {
-                Image itemImage = GetItemImageObjectInSlot(selectedItemHandler.gameObject).GetComponent<Image>();
-                itemImage.color = selectedItemHandler ? selectedItemColor : unselectedItemColor;
+                Image itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject).GetComponent<Image>();
+                itemImage.color = _selectedItemHandler ? selectedItemColor : unselectedItemColor;
             }
         }
 
-        public Item GetSelected()
+        public Item GetSelectedItem()
         {
-            return selectedItemHandler != null ? selectedItemHandler.item : null;
+            return _selectedItemHandler != null ? _selectedItemHandler.item : null;
         }
 
         private void UpdateInventoryPanel()
         {
-            selectedItemHandler = null;
+            _selectedItemHandler = null;
             for (int i = 0; i < inventoryPanel.transform.childCount; i++)
             {
                 GameObject itemSlotObject = GetSlotObject(i);
                 GameObject itemImageObject = GetItemImageObjectInSlot(itemSlotObject);
                 InventoryItemHandler itemHandler = itemSlotObject.GetComponent<InventoryItemHandler>();
                 Image itemImage = itemImageObject.GetComponent<Image>();
-                if (i >= itemsInInventory.Count)
+                if (i >= _itemsInInventory.Count)
                 {
                     itemHandler.item = null;
                     itemImage.sprite = null;
@@ -80,13 +80,13 @@ namespace Fungible.Inventory
                     continue;
                 }
 
-                Item item = itemsInInventory[i];
+                Item item = _itemsInInventory[i];
                 itemHandler.item = item;
                 itemImage.sprite = item.icon;
                 itemImage.color = unselectedItemColor;
                 itemSlotObject.SetActive(true);
                 itemImageObject.SetActive(true);
-                itemHandler.item = itemsInInventory[i];
+                itemHandler.item = _itemsInInventory[i];
             }
         }
         
@@ -106,7 +106,7 @@ namespace Fungible.Inventory
         {
             Instance = this;
             
-            itemsInInventory = new List<Item>();
+            _itemsInInventory = new List<Item>();
 
             for (int i = 0; i < allowedItemCount; i++)
             {
