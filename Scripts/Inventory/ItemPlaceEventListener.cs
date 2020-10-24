@@ -16,10 +16,18 @@ namespace Fungible.Inventory
 
         public override void Event()
         {
+            if (_itemPlace.WrongItemSelected())
+            {
+                var wrongEventSender = GetComponent<WrongItemPlaceEventSender>();
+                if (wrongEventSender)
+                    wrongEventSender.Invoke();
+                return;
+            }
+            
             if (!_itemPlace.TryToApplySelectedItem() || !_itemPlace.CheckRequiredItems())
                 return;
 
-            ItemPlaceEventSender eventSender = GetComponent<ItemPlaceEventSender>();
+            var eventSender = GetComponent<ItemPlaceEventSender>();
             if (eventSender)
                 eventSender.Invoke();
         }

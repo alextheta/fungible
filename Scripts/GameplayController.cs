@@ -17,6 +17,7 @@ namespace Fungible
         {
             MovementHistoryController.Instance.AddPreviousRoom(map.GetCurrentRoom());
             ChangeRoom(room);
+            LightController.Instance.Restore();
         }
         
         public void ChangeRoom(Room room)

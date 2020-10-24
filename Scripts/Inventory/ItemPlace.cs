@@ -16,6 +16,7 @@ namespace Fungible.Inventory
         }
 
         public List<ItemPlaced> requiredItems;
+        public List<Item> wrongItems;
 
         public bool TryToApplySelectedItem()
         {
@@ -29,6 +30,18 @@ namespace Fungible.Inventory
             }
 
             return applied;
+        }
+
+        public bool WrongItemSelected()
+        {
+            Item item = InventoryController.Instance.GetSelectedItem();
+            foreach (var wrongItem in wrongItems)
+            {
+                if (wrongItem == item)
+                    return true;
+            }
+
+            return false;
         }
 
         public bool CheckRequiredItems()
