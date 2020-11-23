@@ -6,9 +6,8 @@ namespace Fungible.Movement
     public class MovementHistoryController : MonoBehaviour
     {
         public GameObject backButton;
-        
         public static MovementHistoryController Instance;
-
+        
         private Stack<Room> _history;
 
         private void Awake()
@@ -19,14 +18,22 @@ namespace Fungible.Movement
 
         public void AddPreviousRoom(Room room)
         {
-            if (room != null)
+            if (room)
+            {
                 _history.Push(room);
+            }
+            
+            SaveController.SaveMovementHistory(_history);
         }
 
         public void PopRoom()
         {
-            if (_history.Count != 0)
+            if (_history.Count > 0)
+            {
                 GameplayController.Instance.ChangeRoom(_history.Pop());
+            }
+
+            SaveController.SaveMovementHistory(_history);
         }
 
         public void UpdateBackButton()

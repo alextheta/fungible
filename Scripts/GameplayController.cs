@@ -17,14 +17,14 @@ namespace Fungible
         {
             MovementHistoryController.Instance.AddPreviousRoom(map.GetCurrentRoom());
             ChangeRoom(room);
-            LightController.Instance.Restore();
         }
-        
+
         public void ChangeRoom(Room room)
         {
             StartCoroutine(RoomTransitionCoroutine(room));
+            LightController.Instance.Restore();
         }
-        
+
         private IEnumerator RoomTransitionCoroutine(Room room)
         {
             ProxyControlsPanel.Instance.DisableControls();
@@ -36,7 +36,7 @@ namespace Fungible
             MovementHistoryController.Instance.UpdateBackButton();
 
             yield return StartCoroutine(faderAnimationController.SetInvisibleCoroutine());
-            
+
             ProxyControlsPanel.Instance.EnableControls();
         }
 

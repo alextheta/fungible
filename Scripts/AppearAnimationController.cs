@@ -15,7 +15,9 @@ namespace Fungible
         public void SetVisibilityState(bool state)
         {
             if (!_animator)
+            {
                 InitAnimatedObject();
+            }
 
             _animator.SetBool(VisibleValue, state);
         }
@@ -61,10 +63,14 @@ namespace Fungible
             }
 
             while (!_animator.GetCurrentAnimatorStateInfo(0).IsName(stateName))
+            {
                 yield return null;
+            }
 
             while (_animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
+            {
                 yield return null;
+            }
         }
 
         private void InitAnimator()
@@ -75,8 +81,8 @@ namespace Fungible
 
         private void InitAnimatedObject()
         {
-            Transform parent = transform.parent;
-            bool active = gameObject.activeSelf;
+            var parent = transform.parent;
+            var active = gameObject.activeSelf;
 
             transform.parent = null;
             gameObject.SetActive(true);

@@ -32,5 +32,10 @@ namespace Fungible.Movement
         {
             return Resources.Load<Sprite>("Backgrounds/" + backgroundResourceName);
         }
+
+        public override string ToString()
+        {
+            return SaveController.RoomPrefix + name;
+        }
     }
 }

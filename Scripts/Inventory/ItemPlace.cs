@@ -20,33 +20,38 @@ namespace Fungible.Inventory
 
         public bool TryToApplySelectedItem()
         {
-            bool applied = false;
-            Item item = InventoryController.Instance.GetSelectedItem();
-            foreach (ItemPlaced checkedItem in requiredItems.Where(checkedItem => checkedItem.item == item))
+            var item = InventoryController.Instance.GetSelectedItem();
+            return TryToApplyItem(item);
+        }
+
+        public bool TryToApplyItem(Item item)
+        {
+            var checkItem = requiredItems.Find(x => x.item == item);
+            if (checkItem == null)
             {
-                checkedItem.placed = true;
-                applied = InventoryController.Instance.RemoveItem(item);
-                break;
+                return false;
             }
 
-            return applied;
+            checkItem.placed = true;
+            InventoryController.Instance.RemoveItem(item);
+            SaveController.SaveItemPlace(this);
+            return true;
         }
 
         public bool WrongItemSelected()
         {
-            Item item = InventoryController.Instance.GetSelectedItem();
-            foreach (var wrongItem in wrongItems)
-            {
-                if (wrongItem == item)
-                    return true;
-            }
-
-            return false;
+            var item = InventoryController.Instance.GetSelectedItem();
+            return wrongItems.Any(wrongItem => wrongItem == item);
         }
 
         public bool CheckRequiredItems()
         {
             return requiredItems.Aggregate(true, (current, requiredItem) => current & requiredItem.placed);
+        }
+
+        public override string ToString()
+        {
+            return SaveController.ItemPlacePrefix + name;
         }
     }
 }

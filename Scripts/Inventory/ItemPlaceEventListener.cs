@@ -9,27 +9,41 @@ namespace Fungible.Inventory
     {
         private ItemPlace _itemPlace;
 
-        private void Awake()
+        private ItemPlace ItemPlaceInstance
         {
-            _itemPlace = GetComponent<ItemPlace>();
+            get
+            {
+                if (!_itemPlace)
+                {
+                    _itemPlace = GetComponent<ItemPlace>();
+                }
+
+                return _itemPlace;
+            }
         }
 
         public override void Event()
         {
-            if (_itemPlace.WrongItemSelected())
+            if (!SaveController.LoadState && ItemPlaceInstance.WrongItemSelected())
             {
                 var wrongEventSender = GetComponent<WrongItemPlaceEventSender>();
                 if (wrongEventSender)
+                {
                     wrongEventSender.Invoke();
+                }
+            }
+
+            if (!SaveController.LoadState && !ItemPlaceInstance.TryToApplySelectedItem() ||
+                !ItemPlaceInstance.CheckRequiredItems())
+            {
                 return;
             }
-            
-            if (!_itemPlace.TryToApplySelectedItem() || !_itemPlace.CheckRequiredItems())
-                return;
 
             var eventSender = GetComponent<ItemPlaceEventSender>();
             if (eventSender)
+            {
                 eventSender.Invoke();
+            }
         }
     }
 }

@@ -26,7 +26,7 @@ namespace Fungible.Storytelling
             _animationController.SetVisibilityState(false);
             _animationController.DisappearImmediate();
         }
-        
+
         private void Awake()
         {
             Instance = this;

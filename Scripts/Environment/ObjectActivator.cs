@@ -10,40 +10,59 @@ namespace Fungible.Environment
 
         public void Invoke()
         {
-            foreach (GameObject entity in objectsToActivate)
+            foreach (var entity in objectsToActivate)
+            {
                 EnableObject(entity);
+            }
 
-            foreach (GameObject entity in objectsToDeactivate)
+            foreach (var entity in objectsToDeactivate)
+            {
                 DisableObject(entity);
+            }
         }
 
         private void EnableObject(GameObject entity)
         {
-            StartCoroutine(EnableObjectCoroutine(entity));
+            if (!SaveController.LoadState)
+            {
+                StartCoroutine(EnableObjectCoroutine(entity));
+            }
+            else if (!SaveController.IsPickedItem(entity))
+            {
+                entity.SetActive(true);
+            }
         }
 
         private void DisableObject(GameObject entity)
         {
-            if (entity.activeInHierarchy)
+            if (entity.activeInHierarchy && !SaveController.LoadState)
+            {
                 StartCoroutine(DisableObjectCoroutine(entity));
-            else
+            }
+            else if (!SaveController.IsPickedItem(entity))
+            {
                 entity.SetActive(false);
+            }
         }
 
-        private IEnumerator EnableObjectCoroutine(GameObject entity)
+        private static IEnumerator EnableObjectCoroutine(GameObject entity)
         {
             entity.SetActive(true);
 
-            AppearAnimationController animationController = entity.GetComponent<AppearAnimationController>();
+            var animationController = entity.GetComponent<AppearAnimationController>();
             if (animationController)
+            {
                 yield return animationController.SetVisibleCoroutine();
+            }
         }
 
-        private IEnumerator DisableObjectCoroutine(GameObject entity)
+        private static IEnumerator DisableObjectCoroutine(GameObject entity)
         {
-            AppearAnimationController animationController = entity.GetComponent<AppearAnimationController>();
+            var animationController = entity.GetComponent<AppearAnimationController>();
             if (animationController)
+            {
                 yield return animationController.SetInvisibleCoroutine();
+            }
 
             entity.SetActive(false);
         }

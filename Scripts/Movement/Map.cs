@@ -31,9 +31,10 @@ namespace Fungible.Movement
             }
 
             _currentRoom = room;
-            
+
             _currentRoom.gameObject.SetActive(true);
             _currentRoom.OnEnter();
+            SaveController.SaveCurrentRoom(_currentRoom);
         }
 
         private void Awake()
@@ -54,8 +55,8 @@ namespace Fungible.Movement
 
         public void AdjustBackground()
         {
-            MainPanel mainPanel = FindObjectOfType<MainPanel>();
-            Camera mainCamera = Camera.main;
+            var mainPanel = FindObjectOfType<MainPanel>();
+            var mainCamera = Camera.main;
             if (!mainPanel)
             {
                 Debug.LogError("Main panel is not set to " + this);
@@ -74,16 +75,16 @@ namespace Fungible.Movement
                 Debug.LogError("Main camera is not exist");
                 return;
             }
-            
+
             transform.position = Vector3.zero;
             transform.localScale = Vector3.one;
 
-            float worldScreenHeight = mainCamera.orthographicSize * 2.0f;
-            float worldScreenWidth = worldScreenHeight * mainCamera.aspect;
+            var worldScreenHeight = mainCamera.orthographicSize * 2.0f;
+            var worldScreenWidth = worldScreenHeight * mainCamera.aspect;
 
-            Vector2 spriteSize = new Vector2(sprite.bounds.size.x, sprite.bounds.size.y);
-            Vector2 coverPanelSize = mainPanel.GetWorldSize();
-            Vector3 scaleDiff = new Vector3((worldScreenWidth - coverPanelSize.x) / 2.0f,
+            var spriteSize = new Vector2(sprite.bounds.size.x, sprite.bounds.size.y);
+            var coverPanelSize = mainPanel.GetWorldSize();
+            var scaleDiff = new Vector3((worldScreenWidth - coverPanelSize.x) / 2.0f,
                 (worldScreenHeight - coverPanelSize.y) / 2.0f, 0);
 
             transform.localScale = new Vector3(coverPanelSize.x / spriteSize.x, coverPanelSize.y / spriteSize.y,

@@ -28,22 +28,24 @@ namespace Fungible.Inventory
             
             _itemsInInventory.Add(item);
             UpdateInventoryPanel();
+            SaveController.SaveItem(item);
             return true;
         }
         
-        public bool RemoveItem(Item item)
+        public void RemoveItem(Item item)
         {
             if (_itemsInInventory.Count <= 0)
-                return false;
+            {
+                return;
+            }
 
             _itemsInInventory.Remove(item);
             UpdateInventoryPanel();
-            return true;
         }
 
         public void SelectItem(InventoryItemHandler itemHandler)
         {
-            if (_selectedItemHandler != null)
+            if (_selectedItemHandler)
             {
                 Image itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject).GetComponent<Image>();
                 itemImage.color = unselectedItemColor;
@@ -51,9 +53,9 @@ namespace Fungible.Inventory
 
             _selectedItemHandler = itemHandler != _selectedItemHandler ? itemHandler : null;
 
-            if (_selectedItemHandler != null)
+            if (_selectedItemHandler)
             {
-                Image itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject).GetComponent<Image>();
+                var itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject).GetComponent<Image>();
                 itemImage.color = _selectedItemHandler ? selectedItemColor : unselectedItemColor;
             }
         }
@@ -110,7 +112,7 @@ namespace Fungible.Inventory
 
             for (int i = 0; i < allowedItemCount; i++)
             {
-                GameObject slot = Instantiate(slotPrefab, inventoryPanel.transform);
+                var slot = Instantiate(slotPrefab, inventoryPanel.transform);
                 slot.name = slotPrefab.name + i;
 
                 if (slotFixedAspect)

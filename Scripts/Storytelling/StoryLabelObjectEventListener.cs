@@ -15,6 +15,11 @@ namespace Fungible.Storytelling
 
         public override void Event()
         {
+            if (SaveController.LoadState)
+            {
+                return;
+            }
+            
             if (gameObject.activeSelf)
                 _storyObject.Show();
         }
