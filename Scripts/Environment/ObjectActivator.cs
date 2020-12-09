@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
 using UnityEngine;
 
 namespace Fungible.Environment
@@ -21,11 +21,17 @@ namespace Fungible.Environment
             }
         }
 
-        private void EnableObject(GameObject entity)
+        private static void EnableObject(GameObject entity)
         {
             if (!SaveController.LoadState)
             {
-                StartCoroutine(EnableObjectCoroutine(entity));
+                entity.SetActive(true);
+                var animationController = entity.GetComponent<SpriteAnimationController>();
+                if (animationController)
+                {
+                    animationController.DisappearTween().Complete();
+                    animationController.AppearTween();
+                }
             }
             else if (!SaveController.IsPickedItem(entity))
             {
@@ -33,38 +39,26 @@ namespace Fungible.Environment
             }
         }
 
-        private void DisableObject(GameObject entity)
+        private static void DisableObject(GameObject entity)
         {
             if (entity.activeInHierarchy && !SaveController.LoadState)
             {
-                StartCoroutine(DisableObjectCoroutine(entity));
+                var animationController = entity.GetComponent<SpriteAnimationController>();
+                if (animationController)
+                {
+                    entity.SetActive(true);
+                    animationController.AppearTween().Complete();
+                    animationController.DisappearTween().OnComplete(() => entity.SetActive(false));
+                }
+                else
+                {
+                    entity.SetActive(false);
+                }
             }
             else if (!SaveController.IsPickedItem(entity))
             {
                 entity.SetActive(false);
             }
-        }
-
-        private static IEnumerator EnableObjectCoroutine(GameObject entity)
-        {
-            entity.SetActive(true);
-
-            var animationController = entity.GetComponent<AppearAnimationController>();
-            if (animationController)
-            {
-                yield return animationController.SetVisibleCoroutine();
-            }
-        }
-
-        private static IEnumerator DisableObjectCoroutine(GameObject entity)
-        {
-            var animationController = entity.GetComponent<AppearAnimationController>();
-            if (animationController)
-            {
-                yield return animationController.SetInvisibleCoroutine();
-            }
-
-            entity.SetActive(false);
         }
     }
 }

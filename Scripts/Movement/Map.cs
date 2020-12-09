@@ -1,4 +1,5 @@
-﻿using Fungible.UI;
+﻿using DG.Tweening;
+using Fungible.UI;
 using UnityEngine;
 
 namespace Fungible.Movement
@@ -48,6 +49,8 @@ namespace Fungible.Movement
             _currentRoom = firstRoom;
 
             _currentRoom.gameObject.SetActive(true);
+            GameplayController.Instance.faderAnimationController.AppearTween().Complete();
+            GameplayController.Instance.faderAnimationController.DisappearTween();
             _currentRoom.OnEnter();
 
             AdjustBackground();
@@ -63,7 +66,7 @@ namespace Fungible.Movement
                 return;
             }
 
-            Sprite sprite = GetComponent<SpriteRenderer>().sprite;
+            var sprite = GetComponent<SpriteRenderer>().sprite;
             if (!sprite)
             {
                 Debug.LogError("Sprite is not set to " + _spriteRenderer);

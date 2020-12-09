@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
 using TMPro;
 using UnityEngine;
 
@@ -8,38 +8,39 @@ namespace Fungible.Storytelling
     {
         public static StoryLabelController Instance;
 
-        private AppearAnimationController _animationController;
+        private TextAnimationController _textAnimationController;
         private TextMeshProUGUI _textMesh;
-
-        public void Show()
-        {
-            StartCoroutine(ShowLabelCoroutine());
-        }
+        private Sequence _sequence;
 
         public void SetText(string text)
         {
             _textMesh.text = text;
         }
 
-        public void FinishAnimation()
+        public void Show()
         {
-            _animationController.SetVisibilityState(false);
-            _animationController.DisappearImmediate();
+            _sequence.Restart();
+            _sequence.Play();
+        }
+
+        public void FastForward()
+        {
+            _sequence.Complete();
         }
 
         private void Awake()
         {
             Instance = this;
-            _animationController = GetComponent<AppearAnimationController>();
+            _textAnimationController = GetComponent<TextAnimationController>();
             _textMesh = GetComponent<TextMeshProUGUI>();
         }
 
-        private IEnumerator ShowLabelCoroutine()
+        private void Start()
         {
-            yield return null; /* Skip frame for animator purpose */
-            _animationController.SetVisibilityState(true);
-            yield return null; /* Skip frame for animator purpose */
-            yield return StartCoroutine(_animationController.SetInvisibleCoroutine());
+            _sequence = DOTween.Sequence();
+            _sequence.Append(_textAnimationController.AppearTween());
+            _sequence.Append(_textAnimationController.DisappearTween());
+            _sequence.SetAutoKill(false);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
 using Fungible.Movement;
 using Fungible.Storytelling;
 using Fungible.UI;
@@ -9,7 +9,9 @@ namespace Fungible
     public class GameplayController : MonoBehaviour
     {
         public Map map;
-        public AppearAnimationController faderAnimationController;
+        public ImageAnimationController faderAnimationController;
+
+        private Room _transitionRoom;
 
         public static GameplayController Instance;
 
@@ -21,22 +23,24 @@ namespace Fungible
 
         public void ChangeRoom(Room room)
         {
-            StartCoroutine(RoomTransitionCoroutine(room));
-            LightController.Instance.Restore();
+            _transitionRoom = room;
+            ProxyControlsPanel.Instance?.DisableControls();
+            var faderSequence = DOTween.Sequence();
+            faderSequence.Append(faderAnimationController.AppearTween().OnComplete(FaderAppearPhase));
+            faderSequence.Append(faderAnimationController.DisappearTween().OnComplete(FaderDisappearPhase));
+            faderSequence.Play();
         }
 
-        private IEnumerator RoomTransitionCoroutine(Room room)
+        private void FaderAppearPhase()
         {
-            ProxyControlsPanel.Instance.DisableControls();
-
-            yield return StartCoroutine(faderAnimationController.SetVisibleCoroutine());
-
-            StoryLabelController.Instance.FinishAnimation();
-            map.ChangeRoom(room);
+            LightController.Instance.Restore();
+            StoryLabelController.Instance.FastForward();
+            map.ChangeRoom(_transitionRoom);
             MovementHistoryController.Instance.UpdateBackButton();
+        }
 
-            yield return StartCoroutine(faderAnimationController.SetInvisibleCoroutine());
-
+        private void FaderDisappearPhase()
+        {
             ProxyControlsPanel.Instance.EnableControls();
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using DG.Tweening;
 using Fungible.Events;
 using UnityEngine;
 
@@ -8,11 +9,11 @@ namespace Fungible.Inventory
     [RequireComponent(typeof(Item))]
     public class ItemPickupEventListener : BaseEventListener
     {
-        private AppearAnimationController _animationController;
+        private SpriteAnimationController _animationController;
 
         private void Awake()
         {
-            _animationController = GetComponent<AppearAnimationController>();
+            _animationController = GetComponent<SpriteAnimationController>();
         }
 
         public override void Event()
@@ -34,28 +35,14 @@ namespace Fungible.Inventory
 
         private void SelfDisable()
         {
-            if (!SaveController.LoadState)
+            if (!SaveController.LoadState && _animationController)
             {
-                StartCoroutine(SelfDisableCoroutine());
+                _animationController.DisappearTween().OnComplete(() => gameObject.SetActive(false));
             }
             else
             {
                 gameObject.SetActive(false);
             }
-        }
-
-        private IEnumerator SelfDisableCoroutine()
-        {
-            if (!_animationController)
-            {
-                yield return null;
-            }
-            else
-            {
-                yield return _animationController.SetInvisibleCoroutine();
-            }
-
-            gameObject.SetActive(false);
         }
     }
 }

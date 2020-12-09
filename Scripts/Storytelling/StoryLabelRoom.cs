@@ -13,7 +13,7 @@ namespace Fungible.Storytelling
         {
             GetComponent<Room>().EnterEvent -= Show;
         }
-        
+
         public override string ToString()
         {
             return SaveController.StoryLabelRoomPrefix + name;
