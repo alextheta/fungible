@@ -13,17 +13,25 @@ namespace Fungible.Events
         public void Subscribe(BaseEventListener listener)
         {
             if (eventListeners != null)
+            {
                 eventListeners.Add(listener);
+            }
             else
+            {
                 Debug.LogError(this + " Subscribe: Event Listener list is null");
+            }
         }
 
         public void Unsubscribe(BaseEventListener listener)
         {
             if (eventListeners != null)
+            {
                 eventListeners.Remove(listener);
+            }
             else
+            {
                 Debug.LogError(this + " Unsubscribe: Event Listener list is null");
+            }
         }
 
         public void Invoke()
@@ -37,9 +45,13 @@ namespace Fungible.Events
             foreach (BaseEventListener listener in eventListeners)
             {
                 if (listener)
+                {
                     listener.Event();
+                }
                 else
+                {
                     Debug.LogError(this + ": Invoke: Listener is null");
+                }
             }
         }
     }
