@@ -1,5 +1,4 @@
-﻿using Fungible;
-using Fungible.Events;
+﻿using Fungible.Events;
 using UnityEngine;
 
 public class SoundEventListener : BaseEventListener
@@ -8,9 +7,6 @@ public class SoundEventListener : BaseEventListener
 
     public override void Event()
     {
-        if (!SaveController.LoadState)
-        {
-            EnvironmentSoundController.Instance.PlayClip(_clip);
-        }
+        EnvironmentSoundController.Instance?.PlayClip(_clip);
     }
 }

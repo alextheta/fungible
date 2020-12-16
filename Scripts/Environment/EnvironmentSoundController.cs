@@ -1,11 +1,12 @@
-﻿using UnityEngine;
+﻿using Fungible;
+using UnityEngine;
 
 [RequireComponent(typeof(AudioSource))]
 public class EnvironmentSoundController : MonoBehaviour
 {
     private AudioSource _audioSource;
     public static EnvironmentSoundController Instance;
-    
+
     private void Awake()
     {
         Instance = this;
@@ -14,7 +15,10 @@ public class EnvironmentSoundController : MonoBehaviour
 
     public void PlayClip(AudioClip clip)
     {
-        _audioSource.clip = clip;
-        _audioSource.Play();
+        if (!SaveController.LoadState)
+        {
+            _audioSource.clip = clip;
+            _audioSource.Play();
+        }
     }
 }

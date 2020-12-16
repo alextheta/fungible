@@ -6,6 +6,7 @@ namespace Fungible.Inventory
     public class Item : MonoBehaviour
     {
         public Sprite icon;
+        [HideInInspector] public bool used;
 
         public override string ToString()
         {

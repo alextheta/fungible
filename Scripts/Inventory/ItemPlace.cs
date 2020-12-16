@@ -33,6 +33,7 @@ namespace Fungible.Inventory
             }
 
             checkItem.placed = true;
+            item.used = true;
             InventoryController.Instance.RemoveItem(item);
             SaveController.SaveItemPlace(this);
             return true;

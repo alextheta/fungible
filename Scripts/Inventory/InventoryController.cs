@@ -23,15 +23,17 @@ namespace Fungible.Inventory
 
         public bool AddItem(Item item)
         {
-            if (_itemsInInventory.Count >= allowedItemCount)
+            if (_itemsInInventory.Count >= allowedItemCount || _itemsInInventory.Contains(item) || item.used)
+            {
                 return false;
-            
+            }
+
             _itemsInInventory.Add(item);
             UpdateInventoryPanel();
             SaveController.SaveItem(item);
             return true;
         }
-        
+
         public void RemoveItem(Item item)
         {
             if (_itemsInInventory.Count <= 0)
@@ -47,7 +49,7 @@ namespace Fungible.Inventory
         {
             if (_selectedItemHandler)
             {
-                Image itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject).GetComponent<Image>();
+                var itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject).GetComponent<Image>();
                 itemImage.color = unselectedItemColor;
             }
 
@@ -62,18 +64,18 @@ namespace Fungible.Inventory
 
         public Item GetSelectedItem()
         {
-            return _selectedItemHandler != null ? _selectedItemHandler.item : null;
+            return _selectedItemHandler ? _selectedItemHandler.item : null;
         }
 
         private void UpdateInventoryPanel()
         {
             _selectedItemHandler = null;
-            for (int i = 0; i < inventoryPanel.transform.childCount; i++)
+            for (var i = 0; i < inventoryPanel.transform.childCount; i++)
             {
-                GameObject itemSlotObject = GetSlotObject(i);
-                GameObject itemImageObject = GetItemImageObjectInSlot(itemSlotObject);
-                InventoryItemHandler itemHandler = itemSlotObject.GetComponent<InventoryItemHandler>();
-                Image itemImage = itemImageObject.GetComponent<Image>();
+                var itemSlotObject = GetSlotObject(i);
+                var itemImageObject = GetItemImageObjectInSlot(itemSlotObject);
+                var itemHandler = itemSlotObject.GetComponent<InventoryItemHandler>();
+                var itemImage = itemImageObject.GetComponent<Image>();
                 if (i >= _itemsInInventory.Count)
                 {
                     itemHandler.item = null;
@@ -82,7 +84,7 @@ namespace Fungible.Inventory
                     continue;
                 }
 
-                Item item = _itemsInInventory[i];
+                var item = _itemsInInventory[i];
                 itemHandler.item = item;
                 itemImage.sprite = item.icon;
                 itemImage.color = unselectedItemColor;
@@ -91,7 +93,7 @@ namespace Fungible.Inventory
                 itemHandler.item = _itemsInInventory[i];
             }
         }
-        
+
         private GameObject GetSlotObject(int index)
         {
             return index > inventoryPanel.transform.childCount
@@ -107,19 +109,23 @@ namespace Fungible.Inventory
         private void Awake()
         {
             Instance = this;
-            
+
             _itemsInInventory = new List<Item>();
 
-            for (int i = 0; i < allowedItemCount; i++)
+            for (var i = 0; i < allowedItemCount; i++)
             {
                 var slot = Instantiate(slotPrefab, inventoryPanel.transform);
                 slot.name = slotPrefab.name + i;
 
                 if (slotFixedAspect)
+                {
                     slot.GetComponent<AspectRatioFitter>().enabled = true;
+                }
 
                 if (itemFixedAspect)
+                {
                     GetItemImageObjectInSlot(slot).GetComponent<AspectRatioFitter>().enabled = true;
+                }
             }
         }
     }

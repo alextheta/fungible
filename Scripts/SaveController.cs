@@ -203,7 +203,7 @@ namespace Fungible
         {
             PlayerPrefs.SetInt(storyLabel.ToString(), TakenItemMark);
         }
-        
+
         private void LoadStoryLabels()
         {
             var storyLabels = _storyLabelMap.Where(storyLabelRoom =>
