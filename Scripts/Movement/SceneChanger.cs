@@ -6,11 +6,11 @@ namespace Fungible.Movement
 {
     public class SceneChanger : BaseEventListener
     {
-        [SerializeField] private string sceneMoveTo;
+        [SerializeField] private string _sceneMoveTo;
 
         public override void Event()
         {
-            SceneManager.LoadScene(sceneMoveTo);
+            SceneManager.LoadScene(_sceneMoveTo);
         }
     }
 }

@@ -15,7 +15,7 @@ public class EnvironmentSoundController : MonoBehaviour
 
     public void PlayClip(AudioClip clip)
     {
-        if (!SaveController.LoadState)
+        if (!SaveController.LoadState && _audioSource.enabled)
         {
             _audioSource.clip = clip;
             _audioSource.Play();

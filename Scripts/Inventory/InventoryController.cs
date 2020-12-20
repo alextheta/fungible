@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using Assets.SimpleLocalization;
+using Fungible.Storytelling;
 using Fungible.UI;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,13 +10,17 @@ namespace Fungible.Inventory
     public class InventoryController : MonoBehaviour
     {
         [Header("Configuration")] public GameObject slotPrefab;
-        public GameObject inventoryPanel;
-        public bool slotFixedAspect;
-        public bool itemFixedAspect;
-        public int allowedItemCount;
+        [SerializeField] private GameObject inventoryPanel;
+        [SerializeField] private bool slotFixedAspect;
+        [SerializeField] private bool itemFixedAspect;
+        [SerializeField] private int allowedItemCount;
+        [SerializeField] private bool showItemTextOnSelect;
+        [SerializeField] private bool tintIconFrame;
 
-        public Color selectedItemColor;
-        public Color unselectedItemColor;
+        [SerializeField] private Color itemSelectedColor;
+        [SerializeField] private Color itemUnselectedColor;
+        [SerializeField] private Color frameSelectedColor;
+        [SerializeField] private Color frameUnselectedColor;
 
         public static InventoryController Instance;
 
@@ -47,18 +53,37 @@ namespace Fungible.Inventory
 
         public void SelectItem(InventoryItemHandler itemHandler)
         {
+            Image itemImage;
             if (_selectedItemHandler)
             {
-                var itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject).GetComponent<Image>();
-                itemImage.color = unselectedItemColor;
+                itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject);
+                itemImage.color = itemUnselectedColor;
+                if (tintIconFrame)
+                {
+                    _selectedItemHandler.Image.color = frameUnselectedColor;
+                }
             }
 
             _selectedItemHandler = itemHandler != _selectedItemHandler ? itemHandler : null;
 
-            if (_selectedItemHandler)
+            if (!_selectedItemHandler)
             {
-                var itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject).GetComponent<Image>();
-                itemImage.color = _selectedItemHandler ? selectedItemColor : unselectedItemColor;
+                return;
+            }
+
+            itemImage = GetItemImageObjectInSlot(_selectedItemHandler.gameObject);
+            itemImage.color = itemSelectedColor;
+            if (tintIconFrame)
+            {
+                _selectedItemHandler.Image.color = frameSelectedColor;
+            }
+
+            if (showItemTextOnSelect)
+            {
+                var itemKey = itemHandler.item.GetComponent<LocalizedFungibleObject>().localizationKey;
+                var itemText = LocalizationManager.Localize(itemKey);
+                StoryLabelController.Instance.SetText(itemText);
+                StoryLabelController.Instance.Show();
             }
         }
 
@@ -72,24 +97,29 @@ namespace Fungible.Inventory
             _selectedItemHandler = null;
             for (var i = 0; i < inventoryPanel.transform.childCount; i++)
             {
-                var itemSlotObject = GetSlotObject(i);
-                var itemImageObject = GetItemImageObjectInSlot(itemSlotObject);
+                GameObject itemSlotObject = GetSlotObject(i);
+                Image itemImage = GetItemImageObjectInSlot(itemSlotObject);
                 var itemHandler = itemSlotObject.GetComponent<InventoryItemHandler>();
-                var itemImage = itemImageObject.GetComponent<Image>();
+
+                if (tintIconFrame)
+                {
+                    itemHandler.Image.color = frameUnselectedColor;
+                }
+
                 if (i >= _itemsInInventory.Count)
                 {
                     itemHandler.item = null;
                     itemImage.sprite = null;
-                    itemImageObject.SetActive(false);
+                    itemImage.gameObject.SetActive(false);
                     continue;
                 }
 
-                var item = _itemsInInventory[i];
+                Item item = _itemsInInventory[i];
                 itemHandler.item = item;
                 itemImage.sprite = item.icon;
-                itemImage.color = unselectedItemColor;
+                itemImage.color = itemUnselectedColor;
                 itemSlotObject.SetActive(true);
-                itemImageObject.SetActive(true);
+                itemImage.gameObject.SetActive(true);
                 itemHandler.item = _itemsInInventory[i];
             }
         }
@@ -101,9 +131,9 @@ namespace Fungible.Inventory
                 : inventoryPanel.transform.GetChild(index).gameObject;
         }
 
-        private GameObject GetItemImageObjectInSlot(GameObject slot)
+        private static Image GetItemImageObjectInSlot(GameObject slot)
         {
-            return slot.transform.GetChild(0).gameObject;
+            return slot.transform.GetChild(0).gameObject.GetComponent<Image>();
         }
 
         private void Awake()
@@ -125,6 +155,11 @@ namespace Fungible.Inventory
                 if (itemFixedAspect)
                 {
                     GetItemImageObjectInSlot(slot).GetComponent<AspectRatioFitter>().enabled = true;
+                }
+
+                if (tintIconFrame)
+                {
+                    slot.GetComponent<Image>().color = frameUnselectedColor;
                 }
             }
         }
