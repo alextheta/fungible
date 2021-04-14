@@ -33,8 +33,7 @@ namespace Fungible.Inventory
                 }
             }
 
-            if (!SaveController.LoadState && !ItemPlaceInstance.TryToApplySelectedItem() ||
-                !ItemPlaceInstance.CheckRequiredItems())
+            if (!SaveController.LoadState && !ItemPlaceInstance.TryToApplySelectedItem() || !ItemPlaceInstance.CheckRequiredItems())
             {
                 return;
             }

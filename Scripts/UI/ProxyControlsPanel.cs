@@ -31,18 +31,21 @@ namespace Fungible.UI
 
         public void OnPointerDown(PointerEventData pointerEventData)
         {
-            List<RaycastResult> raycastResults = new List<RaycastResult>();
+            var raycastResults = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerEventData, raycastResults);
 
-            if (raycastResults.Count <= 0)
-                return;
 
             ProcessRaycastResults(raycastResults);
         }
 
         private void ProcessRaycastResults(List<RaycastResult> raycastResults)
         {
-            raycastResults.RemoveAll((result => IsLayerInMask(result.gameObject.layer, _uiLayerMask)));
+            raycastResults.RemoveAll(result => IsLayerInMask(result.gameObject.layer, _uiLayerMask));
+
+            if (raycastResults.Count == 0)
+            {
+                return;
+            }
 
             try
             {
@@ -60,18 +63,17 @@ namespace Fungible.UI
                 Debug.LogException(ex);
             }
 
-            if (raycastResults.Count > 0)
+            int topSortingOrder = raycastResults.First().gameObject.GetComponent<SortingGroup>().sortingOrder;
+            foreach (RaycastResult raycastResult in raycastResults)
             {
-                int topSortingOrder = raycastResults.First().gameObject.GetComponent<SortingGroup>().sortingOrder;
-                foreach (RaycastResult raycastResult in raycastResults)
+                int currentObjectSortingOrder = raycastResult.gameObject.GetComponent<SortingGroup>().sortingOrder;
+                if (currentObjectSortingOrder != topSortingOrder)
                 {
-                    int currentObjectSortingOrder = raycastResult.gameObject.GetComponent<SortingGroup>().sortingOrder;
-                    if (currentObjectSortingOrder != topSortingOrder)
-                        break;
-
-                    ClickEventSender eventSender = raycastResult.gameObject.GetComponent<ClickEventSender>();
-                    eventSender.Invoke();
+                    break;
                 }
+
+                var eventSender = raycastResult.gameObject.GetComponent<ClickEventSender>();
+                eventSender.Invoke();
             }
         }
 

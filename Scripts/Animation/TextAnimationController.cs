@@ -2,25 +2,28 @@
 using TMPro;
 using UnityEngine;
 
-public class TextAnimationController : MonoBehaviour
+namespace Fungible.Animation
 {
-    [SerializeField] private Color targetColor;
-    [SerializeField] private float appearDuration;
-    [SerializeField] private float disappearDuration;
-    private TMP_Text _text;
-
-    private void Awake()
+    public class TextAnimationController : MonoBehaviour
     {
-        _text = GetComponent<TMP_Text>();
-    }
+        [SerializeField] private Color targetColor;
+        [SerializeField] private float appearDuration;
+        [SerializeField] private float disappearDuration;
+        private TMP_Text _text;
 
-    public Tween AppearTween()
-    {
-        return _text.DOColor(targetColor, appearDuration);
-    }
+        private void Awake()
+        {
+            _text = GetComponent<TMP_Text>();
+        }
 
-    public Tween DisappearTween()
-    {
-        return _text.DOColor(Color.clear, disappearDuration);
+        public Tween AppearTween()
+        {
+            return _text.DOColor(targetColor, appearDuration);
+        }
+
+        public Tween DisappearTween()
+        {
+            return _text.DOColor(Color.clear, disappearDuration);
+        }
     }
 }

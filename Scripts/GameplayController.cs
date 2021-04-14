@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Fungible.Animation;
 using Fungible.Movement;
 using Fungible.Storytelling;
 using Fungible.UI;
@@ -25,7 +26,7 @@ namespace Fungible
         {
             _transitionRoom = room;
             ProxyControlsPanel.Instance?.DisableControls();
-            var faderSequence = DOTween.Sequence();
+            Sequence faderSequence = DOTween.Sequence();
             faderSequence.Append(faderAnimationController.AppearTween().OnComplete(FaderAppearPhase));
             faderSequence.Append(faderAnimationController.DisappearTween().OnComplete(FaderDisappearPhase));
             faderSequence.Play();

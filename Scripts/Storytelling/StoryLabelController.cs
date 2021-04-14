@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Fungible.Animation;
 using TMPro;
 using UnityEngine;
 

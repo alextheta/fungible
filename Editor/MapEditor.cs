@@ -1,5 +1,4 @@
 ﻿#if UNITY_EDITOR
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Fungible.Movement;
@@ -70,23 +69,25 @@ namespace Fungible.Editor
         private void DisplayedRoomBlock()
         {
             Room room = roomNameMap[roomNames[displayedRoomIndex]];
-            
+
             GUILayout.BeginVertical("box");
 
             GUILayout.BeginHorizontal();
             bool prevShowRoomInEditor = showRoomInEditor;
             showRoomInEditor = EditorGUILayout.Toggle(new GUIContent("Display Room"), prevShowRoomInEditor);
-            
+
             if (GUILayout.Button("Go To GameObject"))
+            {
                 Selection.activeGameObject = room.gameObject;
+            }
 
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             int previousIndex = displayedRoomIndex;
             displayedRoomIndex = EditorGUILayout.Popup(new GUIContent("Displayed Room"),
-                                                       previousIndex,
-                                                       roomNames.ToArray());
+                previousIndex,
+                roomNames.ToArray());
 
             if (showRoomInEditor && (!prevShowRoomInEditor || previousIndex != displayedRoomIndex))
             {
@@ -103,15 +104,17 @@ namespace Fungible.Editor
             }
 
             GUILayout.EndHorizontal();
-            
+
             GUILayout.BeginHorizontal();
-            
+
             replaceRoomName = EditorGUILayout.TextField("Rename Room", replaceRoomName);
             if (GUILayout.Button("Rename Room"))
+            {
                 RenameRoom(replaceRoomName);
-            
+            }
+
             GUILayout.EndHorizontal();
-            
+
             room.backgroundResourceName = EditorGUILayout.TextField("Room Background File", room.backgroundResourceName);
 
             GUILayout.EndVertical();
@@ -122,10 +125,12 @@ namespace Fungible.Editor
             GUILayout.BeginVertical("box");
 
             newRoomName = EditorGUILayout.TextField("New Room Name", newRoomName);
-            
+
             if (GUILayout.Button("Create Room"))
+            {
                 CreateRoom(newRoomName);
-            
+            }
+
             GUILayout.EndVertical();
         }
 
@@ -155,7 +160,9 @@ namespace Fungible.Editor
             Map map = (Map) target;
             map.GetComponent<SpriteRenderer>().sprite = null;
             for (int i = 0; i < roomNames.Count; i++)
+            {
                 DisableRoom(i);
+            }
         }
 
         private void DisableRoom(int index)
@@ -170,10 +177,10 @@ namespace Fungible.Editor
             DestroyImmediate(room.gameObject);
             RebuildMapData();
         }
-        
+
         private void CreateRoom(string name)
         {
-            if (String.IsNullOrEmpty(name))
+            if (string.IsNullOrEmpty(name))
             {
                 Debug.LogError("Room name is empty");
                 return;
@@ -196,16 +203,16 @@ namespace Fungible.Editor
             RebuildMapData();
         }
 
-        private void RenameRoom(string name)
+        private void RenameRoom(string roomName)
         {
-            roomNameMap[roomNames[displayedRoomIndex]].name = name;
+            roomNameMap[roomNames[displayedRoomIndex]].name = roomName;
             RebuildMapData();
         }
-        
+
         private void RebuildMapData()
         {
             Map map = (Map) target;
-            
+
             roomNames.Clear();
             roomNameMap.Clear();
 

@@ -1,7 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace Fungible
+namespace Fungible.Animation
 {
     public class SpriteAnimationController : MonoBehaviour
     {

@@ -90,9 +90,10 @@ namespace Fungible.Movement
             var scaleDiff = new Vector3((worldScreenWidth - coverPanelSize.x) / 2.0f,
                 (worldScreenHeight - coverPanelSize.y) / 2.0f, 0);
 
-            transform.localScale = new Vector3(coverPanelSize.x / spriteSize.x, coverPanelSize.y / spriteSize.y,
+            transform.localScale = new Vector3(
+                coverPanelSize.x / spriteSize.x,
+                coverPanelSize.y / spriteSize.y,
                 transform.localScale.z);
-
             transform.position -= scaleDiff;
         }
     }

@@ -78,13 +78,15 @@ namespace Fungible.Inventory
                 _selectedItemHandler.Image.color = frameSelectedColor;
             }
 
-            if (showItemTextOnSelect)
+            if (!showItemTextOnSelect)
             {
-                var itemKey = itemHandler.item.GetComponent<LocalizedFungibleObject>().localizationKey;
-                var itemText = LocalizationManager.Localize(itemKey);
-                StoryLabelController.Instance.SetText(itemText);
-                StoryLabelController.Instance.Show();
+                return;
             }
+
+            string itemKey = itemHandler.item.GetComponent<LocalizedFungibleObject>().localizationKey;
+            string itemText = LocalizationManager.Localize(itemKey);
+            StoryLabelController.Instance.SetText(itemText);
+            StoryLabelController.Instance.Show();
         }
 
         public Item GetSelectedItem()
@@ -144,7 +146,7 @@ namespace Fungible.Inventory
 
             for (var i = 0; i < allowedItemCount; i++)
             {
-                var slot = Instantiate(slotPrefab, inventoryPanel.transform);
+                GameObject slot = Instantiate(slotPrefab, inventoryPanel.transform);
                 slot.name = slotPrefab.name + i;
 
                 if (slotFixedAspect)

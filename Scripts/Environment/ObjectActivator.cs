@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Fungible.Animation;
 using UnityEngine;
 
 namespace Fungible.Environment
@@ -10,12 +11,12 @@ namespace Fungible.Environment
 
         public void Invoke()
         {
-            foreach (var entity in objectsToActivate)
+            foreach (GameObject entity in objectsToActivate)
             {
                 EnableObject(entity);
             }
 
-            foreach (var entity in objectsToDeactivate)
+            foreach (GameObject entity in objectsToDeactivate)
             {
                 DisableObject(entity);
             }
@@ -27,11 +28,14 @@ namespace Fungible.Environment
             {
                 entity.SetActive(true);
                 var animationController = entity.GetComponent<SpriteAnimationController>();
-                if (animationController)
+
+                if (!animationController)
                 {
-                    animationController.DisappearTween().Complete();
-                    animationController.AppearTween();
+                    return;
                 }
+
+                animationController.DisappearTween().Complete();
+                animationController.AppearTween();
             }
             else if (!SaveController.IsPickedItem(entity))
             {

@@ -16,12 +16,14 @@ public class TextPanelBackground : MonoBehaviour
     private void Update()
     {
         var alpha = 0f;
-        
+
         if (!string.IsNullOrEmpty(_text.text))
         {
             alpha = maxAlpha * _text.color.a;
         }
-        
-        _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, alpha);
+
+        Color color = _image.color;
+        color = new Color(color.r, color.g, color.b, alpha);
+        _image.color = color;
     }
 }

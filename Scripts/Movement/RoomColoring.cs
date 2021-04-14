@@ -6,7 +6,7 @@ namespace Fungible.Movement
     public class RoomColoring : MonoBehaviour
     {
         [SerializeField] private Color color;
-        
+
         private Color _cachedColor;
 
         private void OnEnable()

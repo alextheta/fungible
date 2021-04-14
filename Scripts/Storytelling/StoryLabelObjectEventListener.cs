@@ -19,7 +19,7 @@ namespace Fungible.Storytelling
             {
                 return;
             }
-            
+
             if (gameObject.activeSelf)
                 _storyObject.Show();
         }

@@ -32,7 +32,7 @@ namespace Fungible
             /* Items */
             _itemMap = new Dictionary<string, Item>();
 
-            var allItems = Resources.FindObjectsOfTypeAll<Item>();
+            Item[] allItems = Resources.FindObjectsOfTypeAll<Item>();
 
             foreach (var item in allItems)
             {
@@ -43,9 +43,9 @@ namespace Fungible
             /* Item places */
             _itemPlaceMap = new Dictionary<string, ItemPlace>();
 
-            var allItemPlaces = Resources.FindObjectsOfTypeAll<ItemPlace>();
+            ItemPlace[] allItemPlaces = Resources.FindObjectsOfTypeAll<ItemPlace>();
 
-            foreach (var itemPlace in allItemPlaces)
+            foreach (ItemPlace itemPlace in allItemPlaces)
             {
                 _itemPlaceMap[itemPlace.ToString()] = itemPlace;
                 LoadItemPlace(itemPlace);
@@ -54,7 +54,7 @@ namespace Fungible
             /* Rooms */
             _roomMap = new Dictionary<string, Room>();
 
-            var allRooms = Resources.FindObjectsOfTypeAll<Room>();
+            Room[] allRooms = Resources.FindObjectsOfTypeAll<Room>();
             foreach (var room in allRooms)
             {
                 _roomMap[room.ToString()] = room;
@@ -64,8 +64,8 @@ namespace Fungible
             LoadCurrentRoom();
 
             _storyLabelMap = new Dictionary<string, StoryLabelObject>();
-            var allStoryLabelRooms = Resources.FindObjectsOfTypeAll<StoryLabelRoom>();
-            foreach (var storyLabel in allStoryLabelRooms)
+            StoryLabelRoom[] allStoryLabelRooms = Resources.FindObjectsOfTypeAll<StoryLabelRoom>();
+            foreach (StoryLabelRoom storyLabel in allStoryLabelRooms)
             {
                 _storyLabelMap[storyLabel.ToString()] = storyLabel;
             }
@@ -137,9 +137,9 @@ namespace Fungible
             }
 
             var itemPlaceEventListener = itemPlace.GetComponent<ItemPlaceEventListener>();
-            var savedItems = PlayerPrefs.GetString(itemPlace.ToString()).Split(DataSeparator);
+            string[] savedItems = PlayerPrefs.GetString(itemPlace.ToString()).Split(DataSeparator);
 
-            foreach (var savedItem in savedItems)
+            foreach (string savedItem in savedItems)
             {
                 itemPlace.TryToApplyItem(_itemMap[savedItem]);
 
@@ -164,14 +164,14 @@ namespace Fungible
 
         private void LoadMovementHistory()
         {
-            var historyData = PlayerPrefs.GetString(MovementHistoryKey);
+            string historyData = PlayerPrefs.GetString(MovementHistoryKey);
             if (string.IsNullOrEmpty(historyData))
             {
                 return;
             }
 
-            var savedRooms = historyData.Split(DataSeparator).Reverse().ToArray();
-            foreach (var room in savedRooms)
+            string[] savedRooms = historyData.Split(DataSeparator).Reverse().ToArray();
+            foreach (string room in savedRooms)
             {
                 MovementHistoryController.Instance.AddPreviousRoom(_roomMap[room]);
             }

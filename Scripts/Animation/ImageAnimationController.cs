@@ -2,24 +2,27 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ImageAnimationController : MonoBehaviour
+namespace Fungible.Animation
 {
-    [SerializeField] private Color targetColor;
-    [SerializeField] private float duration;
-    private Image _image;
-
-    private void Awake()
+    public class ImageAnimationController : MonoBehaviour
     {
-        _image = GetComponent<Image>();
-    }
+        [SerializeField] private Color targetColor;
+        [SerializeField] private float duration;
+        private Image _image;
 
-    public Tween AppearTween()
-    {
-        return _image.DOColor(targetColor, duration);
-    }
+        private void Awake()
+        {
+            _image = GetComponent<Image>();
+        }
 
-    public Tween DisappearTween()
-    {
-        return _image.DOColor(Color.clear, duration);
+        public Tween AppearTween()
+        {
+            return _image.DOColor(targetColor, duration);
+        }
+
+        public Tween DisappearTween()
+        {
+            return _image.DOColor(Color.clear, duration);
+        }
     }
 }

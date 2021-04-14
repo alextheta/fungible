@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Fungible.Animation;
+using UnityEngine;
 
 namespace Fungible.UI
 {

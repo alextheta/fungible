@@ -20,13 +20,13 @@ namespace Fungible.Inventory
 
         public bool TryToApplySelectedItem()
         {
-            var item = InventoryController.Instance.GetSelectedItem();
+            Item item = InventoryController.Instance.GetSelectedItem();
             return TryToApplyItem(item);
         }
 
         public bool TryToApplyItem(Item item)
         {
-            var checkItem = requiredItems.Find(x => x.item == item);
+            ItemPlaced checkItem = requiredItems.Find(x => x.item == item);
             if (checkItem == null)
             {
                 return false;
@@ -41,7 +41,7 @@ namespace Fungible.Inventory
 
         public bool WrongItemSelected()
         {
-            var item = InventoryController.Instance.GetSelectedItem();
+            Item item = InventoryController.Instance.GetSelectedItem();
             return wrongItems.Any(wrongItem => wrongItem == item);
         }
 

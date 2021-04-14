@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using DG.Tweening;
+﻿using DG.Tweening;
+using Fungible.Animation;
 using Fungible.Events;
 using UnityEngine;
 
