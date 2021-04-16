@@ -73,7 +73,7 @@ namespace Fungible.UI
                 }
 
                 var eventSender = raycastResult.gameObject.GetComponent<ClickEventSender>();
-                eventSender.Invoke();
+                eventSender?.Invoke();
             }
         }
 
