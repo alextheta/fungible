@@ -12,6 +12,11 @@ namespace Fungible.Movement
 
         private SpriteRenderer _spriteRenderer;
         private Room _currentRoom;
+        
+        public delegate void RoomChangeEvent(Room room);
+
+        public event RoomChangeEvent RoomEnterEvent;
+        public event RoomChangeEvent RoomLeaveEvent;
 
         public Room GetCurrentRoom()
         {
@@ -27,6 +32,7 @@ namespace Fungible.Movement
         {
             if (_currentRoom)
             {
+                RoomLeaveEvent?.Invoke(_currentRoom);
                 _currentRoom.OnLeave();
                 _currentRoom.gameObject.SetActive(false);
             }
@@ -35,6 +41,7 @@ namespace Fungible.Movement
 
             _currentRoom.gameObject.SetActive(true);
             _currentRoom.OnEnter();
+            RoomEnterEvent?.Invoke(_currentRoom);
             SaveController.SaveCurrentRoom(_currentRoom);
         }
 

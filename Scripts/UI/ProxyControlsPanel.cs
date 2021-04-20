@@ -34,7 +34,6 @@ namespace Fungible.UI
             var raycastResults = new List<RaycastResult>();
             EventSystem.current.RaycastAll(pointerEventData, raycastResults);
 
-
             ProcessRaycastResults(raycastResults);
         }
 
